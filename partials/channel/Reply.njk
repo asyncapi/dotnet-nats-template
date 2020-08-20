@@ -1,0 +1,64 @@
+
+{% macro reply(channelName, channelParameters, replyMessage, receiveMessage) %}
+{%- from "./ChannelSerializer.njk" import serializer %}
+{%- from "./ChannelDeserializer.njk" import deserializer %}
+{{serializer(replyMessage)}}
+{{deserializer(receiveMessage)}}
+public static void Reply(
+    LoggingInterface logger,
+    IEncodedConnection connection, 
+    {{channelName | pascalCase}}OnRequest onRequest
+    {% if channelParameters | length %}
+      ,{{channelParameters | realizeParametersForChannel}}
+    {% endif %})
+{
+    EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
+    {
+        logger.Debug("Got message on channel " + ${{channelParameters | realizeChannelName(channelName) | safe}});
+        if(args.Message.Reply != null)
+        {
+            {%- from "./ChannelParameterUnwrap.njk" import unwrap %}
+            {{unwrap(channelName, channelParameters)}}
+
+            
+            {%- if receiveMessage.payload() | messageHasNotNullPayload %}
+            var deserializedMessage = JsonDeserializer((byte[])args.ReceivedObject);
+            {%- if replyMessage.payload() | messageHasNotNullPayload %}var reply = {%- endif %} onRequest(deserializedMessage {% if channelParameters | length %},
+              {%- set counter = 1 %}
+              {%- for parameterName, parameter in channelParameters %}
+                {{parameterName | camelCase}}Param{%- if counter < (channelParameters | length) %},{%- endif %}
+                {%- set counter = counter+1 %}
+              {%- endfor %}
+              {%- endif %});
+            {%- else %}
+            
+            {%- if replyMessage.payload() | messageHasNotNullPayload %}var reply = {%- endif %}onRequest({% if channelParameters | length %}
+              {%- set counter = 1 %}
+              {%- for parameterName, parameter in channelParameters %}
+                {{parameterName | camelCase}}Param{%- if counter < (channelParameters | length) %},{%- endif %}
+                {%- set counter = counter+1 %}
+              {%- endfor %}
+              {%- endif %});
+            {%- endif %}
+            
+            logger.Info("Replying to request");
+            logger.Debug("Replying to request on channel " + args.Message.Reply);
+            {%- if replyMessage.payload() | messageHasNotNullPayload %}
+            var serializedObject = JsonSerializer(reply); 
+            connection.Publish(args.Message.Reply, serializedObject);
+            {%- else %}
+            connection.Publish(args.Message.Reply, null);
+            {%- endif %}
+        }
+        else
+        {
+            // Did not expect reply
+            logger.Error(${{channelParameters | realizeChannelName(channelName) | safe}} +  " did not receive a reply topic..");
+        }
+        
+    };
+    logger.Info(${{channelParameters | realizeChannelName(channelName) | safe }} + "subscribing to channel");
+    IAsyncSubscription s = connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe }}, {%- if (replyMessage | hasNatsBindings) and (replyMessage.bindings().nats().queue() | length) %}"{{replyMessage.bindings().nats().queue()}}",{%- endif %} handler);
+
+}
+{% endmacro %}

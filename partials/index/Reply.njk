@@ -1,0 +1,25 @@
+
+{% macro reply(defaultContentType, channelName, replyMessage, receiveMessage, messageDescription, channelParameters, params) %}
+
+public void ReplyTo{{channelName | pascalCase }}(
+    {{channelName | pascalCase}}OnRequest onRequest
+    {% if channelParameters | length %}
+      ,{{channelParameters | realizeParametersForChannel}}
+    {% endif %}
+){
+    if (IsConnected())
+    {
+        {{channelName | pascalCase }}.Reply(
+          logger,
+          connection, 
+          onRequest 
+          {% if channelParameters | length %}
+            ,{{channelParameters | realizeParametersForChannelWithoutType}}
+          {% endif %});
+    }
+    else
+    {
+        throw new ClientNotConnected();
+    }
+}
+{% endmacro %}

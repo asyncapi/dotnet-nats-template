@@ -1,0 +1,27 @@
+
+{% macro publish(channelName, channelParameters, publishMessage) %}
+
+{%- from "./ChannelSerializer.njk" import serializer %}
+{{serializer(publishMessage)}}
+
+public static void Publish(
+    LoggingInterface logger,
+    IEncodedConnection connection
+    {%- if publishMessage.payload() | messageHasNotNullPayload %}
+    ,{{publishMessage | getMessageType}}NameSpace.{{publishMessage | getMessageType}} requestMessage 
+    {%- endif %} 
+    
+    {% if channelParameters | length %}
+      ,{{channelParameters | realizeParametersForChannel}}
+    {% endif %}
+){
+  logger.Debug("Publishing to channel " + ${{channelParameters | realizeChannelName(channelName) | safe}});
+  {%- if publishMessage.payload() | messageHasNotNullPayload %}
+  var serializedObject = JsonSerializer(requestMessage); 
+  connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
+  {%- else %}
+  connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, null);
+  {%- endif %}
+
+}
+{% endmacro %}

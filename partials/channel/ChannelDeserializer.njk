@@ -1,0 +1,11 @@
+
+{% macro deserializer(message) %}
+
+{%- if message.payload() | messageHasNotNullPayload %}
+internal static {{message  | getMessageType}}NameSpace.{{ message | getMessageType }} JsonDeserializer(byte[] buffer)
+{
+  var srt = Encoding.UTF8.GetString(buffer);
+  return {{message  | getMessageType}}NameSpace.{{ message | getMessageType }}.FromJson(srt);
+}
+{% endif %}
+{% endmacro %}

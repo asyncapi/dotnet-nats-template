@@ -1,0 +1,24 @@
+
+{% macro subscribe(defaultContentType, channelName, channelParameters) %}
+public void SubscribeTo{{channelName | pascalCase }}(
+    {{channelName | pascalCase}}OnRequest onRequest
+    {% if channelParameters | length %}
+      ,{{channelParameters | realizeParametersForChannel}}
+    {% endif %}
+){
+    if (IsConnected())
+    {
+        {{channelName | pascalCase }}.Subscribe(
+          logger,
+          connection, 
+          onRequest 
+          {% if channelParameters | length %}
+            ,{{channelParameters | realizeParametersForChannelWithoutType}}
+          {% endif %});
+    }
+    else
+    {
+        throw new ClientNotConnected();
+    }
+}
+{% endmacro %}

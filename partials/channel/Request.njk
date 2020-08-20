@@ -1,0 +1,35 @@
+
+{% macro request(channelName, channelParameters, requestMessage, receiveMessage) %}
+{%- from "./ChannelSerializer.njk" import serializer %}
+{%- from "./ChannelDeserializer.njk" import deserializer %}
+{{serializer(requestMessage)}}
+{{deserializer(receiveMessage)}}
+public static {%- if receiveMessage.payload() | messageHasNotNullPayload %} {{receiveMessage | getMessageType}}NameSpace.{{receiveMessage | getMessageType}} {%- else %} void {%- endif %} Request(
+    LoggingInterface logger,
+    IEncodedConnection connection 
+    {%- if requestMessage.payload() | messageHasNotNullPayload %}
+      ,{{requestMessage | getMessageType}}NameSpace.{{requestMessage | getMessageType}} requestMessage 
+    {% endif %}
+    {% if channelParameters | length %}
+      ,{{channelParameters | realizeParametersForChannel}}
+    {% endif %})
+{
+  logger.Info($"Sending request to " + ${{channelParameters | realizeChannelName(channelName) | safe}});
+  {%- if requestMessage.payload() | messageHasNotNullPayload %}
+  var serializedObject = JsonSerializer(requestMessage); 
+  {%- if receiveMessage.payload() | messageHasNotNullPayload %}
+  var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
+  return JsonDeserializer((byte[])recievedObject);
+  {%- else %}
+  connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
+  {%- endif %}
+  {%- else %}
+  {%- if receiveMessage.payload() | messageHasNotNullPayload %}
+  var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, null);
+  return JsonDeserializer((byte[])recievedObject);
+  {%- else %}
+  connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
+  {%- endif %}
+  {%- endif %}
+}
+{% endmacro %}

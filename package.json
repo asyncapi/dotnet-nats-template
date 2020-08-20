@@ -1,0 +1,42 @@
+{
+	"name": "@asyncapi/dotnet-nats-template",
+	"version": "0.1.0",
+	"description": "NATS .NET template for the AsyncAPI generator.",
+	"keywords": [
+		"asyncapi",
+		"generator",
+		"dotnet",
+		".NET",
+		"nats",
+		"template"
+	],
+	"author": "Jonas Lagoni (jonas-lt@live.dk)",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"filenamify": "^4.1.0",
+		"lodash": "^4.17.15",
+		"@asyncapi/generator-filters": "^1.0.0",
+		"quicktype-core": "6.0.66",
+		"is-url": "1.2.4"
+	},
+	"generator": {
+		"supportedProtocols": [
+			"nats"
+		],
+		"parameters": {
+			"generateTestClient": {
+				"description": "Generate the test client",
+				"default": "false",
+				"required": false
+			}
+		},
+		"nonRenderableFiles": [
+			"packages/**",
+			"packages/**/.*.*"
+		],
+		"generator": ">=0.50.0 <=2.0.0",
+		"filters": [
+			"@asyncapi/generator-filters"
+		]
+	}
+}

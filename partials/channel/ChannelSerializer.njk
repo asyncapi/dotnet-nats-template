@@ -1,0 +1,10 @@
+
+{% macro serializer(message) %}
+{%- if message.payload() | messageHasNotNullPayload %}
+internal static byte[] JsonSerializer({{message | getMessageType}}NameSpace.{{message | getMessageType}} obj)
+{
+  var json = {{message | getMessageType}}NameSpace.Serialize.ToJson(obj);
+  return Encoding.UTF8.GetBytes(json);
+}
+{%- endif %}
+{% endmacro %}

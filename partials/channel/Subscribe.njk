@@ -1,0 +1,45 @@
+
+{% macro subscribe(channelName, channelParameters, subscribtionMessage) %}
+{%- from "./ChannelDeserializer.njk" import deserializer %}
+{{deserializer(subscribtionMessage)}}
+public static void Subscribe(
+    LoggingInterface logger,
+    IEncodedConnection connection, 
+    {{channelName | pascalCase}}OnRequest onRequest
+    {% if channelParameters | length %}
+      ,{{channelParameters | realizeParametersForChannel}}
+    {% endif %})
+{
+    EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
+    {
+        logger.Debug("Got message for channel subscribtion" + ${{channelParameters | realizeChannelName(channelName) | safe}});
+        var deserializedMessage = JsonDeserializer((byte[])args.ReceivedObject);
+
+        {%- from "./ChannelParameterUnwrap.njk" import unwrap %}
+        {{unwrap(channelName, channelParameters)}}
+        
+        {%- if subscribtionMessage.payload() | messageHasNotNullPayload %}
+        onRequest(deserializedMessage {% if channelParameters | length %},
+          {%- set counter = 1 %}
+          {%- for parameterName, parameter in channelParameters %}
+            {{parameterName | camelCase}}Param{%- if counter < (channelParameters | length) %},{%- endif %}
+            {%- set counter = counter+1 %}
+          {%- endfor %}
+          {%- endif %});
+        {%- else %}
+        
+        onRequest(null {% if channelParameters | length %},
+          {%- set counter = 1 %}
+          {%- for parameterName, parameter in channelParameters %}
+            {{parameterName | camelCase}}Param{%- if counter < (channelParameters | length) %},{%- endif %}
+            {%- set counter = counter+1 %}
+          {%- endfor %}
+          {%- endif %});
+        {%- endif %}
+        
+    };
+    logger.Debug("Subscribing to" + ${{channelParameters | realizeChannelName(channelName) | safe}});
+    IAsyncSubscription s = connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe}}, {%- if  (subscribtionMessage | hasNatsBindings) and (subscribtionMessage.bindings().nats().queue() | length) %}"{{subscribtionMessage.bindings().nats().queue()}}",{%- endif %} handler);
+
+}
+{% endmacro %}
