@@ -26,7 +26,6 @@ String[] splits = {
 	{%- endif %}
 	{%- set counter = counter + 1 %}
 	{%- endfor %}
-
 };
 
 
@@ -43,24 +42,5 @@ var {{parameterName | camelCase}}Param = channel.Substring(0, {{parameterName | 
 {%- set counter = counter + 1 %}
 {%- set prevParameterName = (parameterName | camelCase) %}
 {%- endfor %}
-{# 
-{%- for parameterName, parameter in channelParameters %}
-var {{parameterName | camelCase}}Split = unmodifiedChannel.Split(new string[] { "{{'{'+ parameterName + '}'}}" }, StringSplitOptions.None);
-var {{parameterName | camelCase}}Start = {{parameterName | camelCase}}Split[0].Length;
-var {{parameterName | camelCase}}End = {{parameterName | camelCase}}Split[1].Length;
-var {{parameterName | camelCase}}Length = args.Subject.Length - ({{parameterName | camelCase}}Start + {{parameterName | camelCase}}End );
-
-{{parameter.schema().type() | toCType}} {{parameterName | camelCase}}Param;
-try
-{
-	{{parameterName | camelCase}}Param = args.Subject.Substring({{parameterName | camelCase}}Start, {{parameterName | camelCase}}Length);
-}
-catch(ArgumentOutOfRangeException e)
-{
-	logger.Error($"Exception when trying to find the parameter {{parameterName | camelCase}}: " + e.Message);
-	return;
-}
-logger.Debug($"Received channel parameter {{parameterName | camelCase}} was { {{ parameterName | camelCase}}Param}");
-{%- endfor %} #}
 {%- endif %}
 {% endmacro %}

@@ -17,10 +17,10 @@ public static void Publish(
 ){
   logger.Debug("Publishing to channel " + ${{channelParameters | realizeChannelName(channelName) | safe}});
   {%- if publishMessage.payload() | messageHasNotNullPayload %}
-  var serializedObject = JsonSerializer(requestMessage); 
+  var serializedObject = JsonSerializer(logger, requestMessage); 
   connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
   {%- else %}
-  connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, null);
+  connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, Encoding.UTF8.GetBytes(""));
   {%- endif %}
 
 }

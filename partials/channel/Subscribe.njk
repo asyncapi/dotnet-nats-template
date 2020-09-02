@@ -13,7 +13,7 @@ public static void Subscribe(
     EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
     {
         logger.Debug("Got message for channel subscribtion" + ${{channelParameters | realizeChannelName(channelName) | safe}});
-        var deserializedMessage = JsonDeserializer((byte[])args.ReceivedObject);
+        var deserializedMessage = JsonDeserializer(logger, (byte[])args.ReceivedObject);
 
         {%- from "./ChannelParameterUnwrap.njk" import unwrap %}
         {{unwrap(channelName, channelParameters)}}

@@ -20,9 +20,8 @@ public static void Reply(
             {%- from "./ChannelParameterUnwrap.njk" import unwrap %}
             {{unwrap(channelName, channelParameters)}}
 
-            
             {%- if receiveMessage.payload() | messageHasNotNullPayload %}
-            var deserializedMessage = JsonDeserializer((byte[])args.ReceivedObject);
+            var deserializedMessage = JsonDeserializer(logger, (byte[])args.ReceivedObject);
             {%- if replyMessage.payload() | messageHasNotNullPayload %}var reply = {%- endif %} onRequest(deserializedMessage {% if channelParameters | length %},
               {%- set counter = 1 %}
               {%- for parameterName, parameter in channelParameters %}
@@ -40,19 +39,17 @@ public static void Reply(
               {%- endfor %}
               {%- endif %});
             {%- endif %}
-            
-            logger.Info("Replying to request");
             logger.Debug("Replying to request on channel " + args.Message.Reply);
             {%- if replyMessage.payload() | messageHasNotNullPayload %}
-            var serializedObject = JsonSerializer(reply); 
+            var serializedObject = JsonSerializer(logger, reply); 
             connection.Publish(args.Message.Reply, serializedObject);
             {%- else %}
-            connection.Publish(args.Message.Reply, null);
+            connection.Publish(args.Message.Reply, Encoding.UTF8.GetBytes(""));
             {%- endif %}
         }
         else
         {
-            // Did not expect reply
+            // Message did not expect reply
             logger.Error(${{channelParameters | realizeChannelName(channelName) | safe}} +  " did not receive a reply topic..");
         }
         

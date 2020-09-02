@@ -1,9 +1,10 @@
 
 {% macro serializer(message) %}
 {%- if message.payload() | messageHasNotNullPayload %}
-internal static byte[] JsonSerializer({{message | getMessageType}}NameSpace.{{message | getMessageType}} obj)
+internal static byte[] JsonSerializer(LoggingInterface logger, {{message | getMessageType}}NameSpace.{{message | getMessageType}} obj)
 {
   var json = {{message | getMessageType}}NameSpace.Serialize.ToJson(obj);
+  logger.Debug("Serialized message " + json);
   return Encoding.UTF8.GetBytes(json);
 }
 {%- endif %}

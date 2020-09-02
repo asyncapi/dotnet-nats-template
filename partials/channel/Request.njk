@@ -16,17 +16,17 @@ public static {%- if receiveMessage.payload() | messageHasNotNullPayload %} {{re
 {
   logger.Info($"Sending request to " + ${{channelParameters | realizeChannelName(channelName) | safe}});
   {%- if requestMessage.payload() | messageHasNotNullPayload %}
-  var serializedObject = JsonSerializer(requestMessage); 
+  var serializedObject = JsonSerializer(logger, requestMessage); 
   {%- if receiveMessage.payload() | messageHasNotNullPayload %}
   var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
-  return JsonDeserializer((byte[])recievedObject);
+  return JsonDeserializer(logger, (byte[])recievedObject);
   {%- else %}
   connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
   {%- endif %}
   {%- else %}
   {%- if receiveMessage.payload() | messageHasNotNullPayload %}
-  var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, null);
-  return JsonDeserializer((byte[])recievedObject);
+  var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, Encoding.UTF8.GetBytes(""));
+  return JsonDeserializer(logger, (byte[])recievedObject);
   {%- else %}
   connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
   {%- endif %}
