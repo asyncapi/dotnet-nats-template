@@ -4,7 +4,7 @@
 {%- from "./ChannelDeserializer.njk" import deserializer %}
 {{serializer(replyMessage)}}
 {{deserializer(receiveMessage)}}
-public static void Reply(
+public static IAsyncSubscription Reply(
     LoggingInterface logger,
     IEncodedConnection connection, 
     {{channelName | pascalCase}}OnRequest onRequest
@@ -55,7 +55,7 @@ public static void Reply(
         
     };
     logger.Info(${{channelParameters | realizeChannelName(channelName) | safe }} + "subscribing to channel");
-    IAsyncSubscription s = connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe }}, {%- if (replyMessage | hasNatsBindings) and (replyMessage.bindings().nats().queue() | length) %}"{{replyMessage.bindings().nats().queue()}}",{%- endif %} handler);
+    return connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe }}, {%- if (replyMessage | hasNatsBindings) and (replyMessage.bindings().nats().queue() | length) %}"{{replyMessage.bindings().nats().queue()}}",{%- endif %} handler);
 
 }
 {% endmacro %}

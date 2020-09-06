@@ -1,7 +1,7 @@
 
 {% macro reply(defaultContentType, channelName, replyMessage, receiveMessage, messageDescription, channelParameters, params) %}
 
-public void ReplyTo{{channelName | pascalCase }}(
+public IAsyncSubscription ReplyTo{{channelName | pascalCase }}(
     {{channelName | pascalCase}}OnRequest onRequest
     {% if channelParameters | length %}
       ,{{channelParameters | realizeParametersForChannel}}
@@ -9,7 +9,7 @@ public void ReplyTo{{channelName | pascalCase }}(
 ){
     if (IsConnected())
     {
-        {{channelName | pascalCase }}.Reply(
+        return {{channelName | pascalCase }}.Reply(
           logger,
           connection, 
           onRequest 

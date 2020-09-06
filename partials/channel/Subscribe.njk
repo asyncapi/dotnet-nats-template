@@ -2,7 +2,7 @@
 {% macro subscribe(channelName, channelParameters, subscribtionMessage) %}
 {%- from "./ChannelDeserializer.njk" import deserializer %}
 {{deserializer(subscribtionMessage)}}
-public static void Subscribe(
+public static IAsyncSubscription Subscribe(
     LoggingInterface logger,
     IEncodedConnection connection, 
     {{channelName | pascalCase}}OnRequest onRequest
@@ -39,7 +39,7 @@ public static void Subscribe(
         
     };
     logger.Debug("Subscribing to" + ${{channelParameters | realizeChannelName(channelName) | safe}});
-    IAsyncSubscription s = connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe}}, {%- if  (subscribtionMessage | hasNatsBindings) and (subscribtionMessage.bindings().nats().queue() | length) %}"{{subscribtionMessage.bindings().nats().queue()}}",{%- endif %} handler);
+    return connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe}}, {%- if  (subscribtionMessage | hasNatsBindings) and (subscribtionMessage.bindings().nats().queue() | length) %}"{{subscribtionMessage.bindings().nats().queue()}}",{%- endif %} handler);
 
 }
 {% endmacro %}

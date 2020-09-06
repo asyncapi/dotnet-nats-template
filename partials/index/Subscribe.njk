@@ -1,6 +1,6 @@
 
 {% macro subscribe(defaultContentType, channelName, channelParameters) %}
-public void SubscribeTo{{channelName | pascalCase }}(
+public IAsyncSubscription SubscribeTo{{channelName | pascalCase }}(
     {{channelName | pascalCase}}OnRequest onRequest
     {% if channelParameters | length %}
       ,{{channelParameters | realizeParametersForChannel}}
@@ -8,7 +8,7 @@ public void SubscribeTo{{channelName | pascalCase }}(
 ){
     if (IsConnected())
     {
-        {{channelName | pascalCase }}.Subscribe(
+        return {{channelName | pascalCase }}.Subscribe(
           logger,
           connection, 
           onRequest 
