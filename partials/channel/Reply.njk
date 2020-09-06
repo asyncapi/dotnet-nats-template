@@ -44,7 +44,7 @@ public static void Reply(
             var serializedObject = JsonSerializer(logger, reply); 
             connection.Publish(args.Message.Reply, serializedObject);
             {%- else %}
-            connection.Publish(args.Message.Reply, Encoding.UTF8.GetBytes(""));
+            connection.Publish(args.Message.Reply, Encoding.UTF8.GetBytes("null"));
             {%- endif %}
         }
         else

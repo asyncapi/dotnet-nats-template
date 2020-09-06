@@ -25,7 +25,7 @@ public static {%- if receiveMessage.payload() | messageHasNotNullPayload %} {{re
   {%- endif %}
   {%- else %}
   {%- if receiveMessage.payload() | messageHasNotNullPayload %}
-  var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, Encoding.UTF8.GetBytes(""));
+  var recievedObject = connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, Encoding.UTF8.GetBytes("null"));
   return JsonDeserializer(logger, (byte[])recievedObject);
   {%- else %}
   connection.Request(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);

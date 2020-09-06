@@ -20,7 +20,7 @@ public static void Publish(
   var serializedObject = JsonSerializer(logger, requestMessage); 
   connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, serializedObject);
   {%- else %}
-  connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, Encoding.UTF8.GetBytes(""));
+  connection.Publish(${{channelParameters | realizeChannelName(channelName) | safe}}, Encoding.UTF8.GetBytes("null"));
   {%- endif %}
 
 }

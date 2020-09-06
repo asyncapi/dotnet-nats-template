@@ -51,7 +51,7 @@ function toCType(jsonSchemaType, property) {
 		case 'integer':
 			return 'int'
 		case 'number':
-			return 'Number';
+			return 'decimal';
 		case 'boolean':
 			return 'bool';
 		case 'object':
@@ -63,9 +63,29 @@ function toCType(jsonSchemaType, property) {
 		default: return 'object';
 	}
 }
-
 filter.toCType = toCType;
 
+
+/**
+ * Cast JSON schema variable to csharp type
+ * 
+ * @param {*} jsonSchemaType 
+ * @param {*} variableToCast 
+ */
+function castToCType(jsonSchemaType, variableToCast) {
+	switch (jsonSchemaType.toLowerCase()) {
+		case 'string':
+			return `$"{${variableToCast}}"`;
+		case 'integer':
+			return `int.Parse(${variableToCast})`
+		case 'number':
+			return `decimal.Parse(${variableToCast}, System.Globalization.CultureInfo.InvariantCulture)`;
+		case 'boolean':
+			return `bool.Parse(${variableToCast})`;
+		default: throw new Error("Parameter type not supported - " + jsonSchemaType);
+	}
+}
+filter.castToCType = castToCType;
 /**
  * Convert RFC 6570 URI with parameters to NATS topic. 
  */

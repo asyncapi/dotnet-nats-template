@@ -38,7 +38,8 @@ channel = channel.Substring(splits[{{counter}}].Length);
 channel = channel.Substring({{prevParameterName}}End+splits[{{counter}}].Length);
 {%- endif %}
 var {{parameterName | camelCase}}End = channel.IndexOf(splits[{{counter+1}}]);
-var {{parameterName | camelCase}}Param = channel.Substring(0, {{parameterName | camelCase}}End);
+{%- set paramVarToCast = 'channel.Substring(0, ' + (parameterName | camelCase) + 'End)' %}
+var {{parameterName | camelCase}}Param = {{parameter.schema().type() | castToCType(paramVarToCast) | safe}};
 {%- set counter = counter + 1 %}
 {%- set prevParameterName = (parameterName | camelCase) %}
 {%- endfor %}
