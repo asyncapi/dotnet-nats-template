@@ -1,0 +1,27 @@
+
+{% macro publish(defaultContentType, channelName, message, messageDescription, channelParameters) %}
+public void PublishTo{{channelName | pascalCase }}(
+  {%- if message.payload() | messageHasNotNullPayload %}
+   {{message | getMessageType}}NameSpace.{{message | getMessageType}} requestMessage 
+  {% endif %}
+  {% if channelParameters | length %}
+    {%- if message.payload() | messageHasNotNullPayload %},{% endif %}{{channelParameters | realizeParametersForChannel}}
+  {% endif %}
+)
+{
+    if (IsConnected())
+    {
+      {{ channelName | pascalCase }}.Publish(logger, connection 
+      {%- if message.payload() | messageHasNotNullPayload %}
+        ,requestMessage 
+      {% endif %} 
+      {% if channelParameters | length %}
+        ,{{channelParameters | realizeParametersForChannelWithoutType}}
+      {% endif %});
+    }
+    else
+    {
+      throw new ClientNotConnected();
+    }
+}
+{% endmacro %}

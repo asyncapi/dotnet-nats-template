@@ -1,0 +1,80 @@
+﻿
+{%- from "../../partials/index/Publish.njk" import publish %}
+{%- from "../../partials/index/Reply.njk" import reply %}
+{%- from "../../partials/index/Request.njk" import request %}
+{%- from "../../partials/index/Subscribe.njk" import subscribe %}
+{%- from "../../partials/index/Standard.njk" import standard %}
+
+namespace Dotnet.Nats.Client
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Dotnet.Nats.Client.channels;
+    using NATS.Client;
+
+
+{%- for channelName, channel in asyncapi.channels() %}
+    {%- if channel | isRequestReply %}
+    {%- if channel | isReplier %}
+    public delegate {%- if channel.publish().message(0).payload() | messageHasNotNullPayload %} {{channel.publish().message(0)  | getMessageType}}NameSpace.{{channel.publish().message(0) | getMessageType}}{% else %} void{% endif %} {{channelName | pascalCase}}OnRequest(
+        {%- if channel.subscribe().message(0).payload() | messageHasNotNullPayload %}
+        {{channel.subscribe().message(0)  | getMessageType}}NameSpace.{{ channel.subscribe().message(0) | getMessageType }} request
+        {% endif %}
+        {% if channel.parameters() | length %}
+            ,{{channel.parameters() | realizeParametersForChannel}}
+        {% endif %}
+    ); 
+    {%- endif %}
+    {%- endif %}
+
+    {%- if channel | isPubsub %}
+    {%- if channel.hasPublish() %}
+    public delegate void {{channelName | pascalCase}}OnRequest(
+        {%- if channel.publish().message(0).payload() | messageHasNotNullPayload %}
+        {{channel.publish().message(0)  | getMessageType}}NameSpace.{{ channel.publish().message(0) | getMessageType }} request
+        {% endif %}
+        {% if channel.parameters() | length %}
+            ,{{channel.parameters() | realizeParametersForChannel}}
+        {% endif %}
+    ); 
+    {%- endif %}
+    {%- endif %}
+{%- endfor %}
+
+
+    public class NatsClient
+    {
+        {{standard(asyncapi)}}
+        
+        public NatsClient()
+        {
+            this.Logger = new DefaultLogger();
+        }
+        public NatsClient(LoggingInterface logger)
+        {
+            this.Logger = logger;
+        }
+        {%- for channelName, channel in asyncapi.channels() %}
+            {%- if channel | isRequestReply %}
+            {%- if channel | isRequester %}
+            {{request(asyncapi.defaultContentType(), channelName, channel.subscribe().message(0), channel.publish().message(0), channel.description(), channel.parameters())}}
+            {%- endif %}
+            {%- if channel | isReplier %}
+            {{reply(asyncapi.defaultContentType(), channelName, channel.subscribe().message(0), channel.publish().message(0), channel.description(), channel.parameters(), params)}}
+            {%- endif %}
+            {%- endif %}
+
+            {%- if channel | isPubsub %}
+            {%- if channel.hasSubscribe() %}
+            {{publish(asyncapi.defaultContentType(), channelName, channel.subscribe().message(0), channel.description(), channel.parameters())}}
+            {%- endif %}
+            {%- if channel.hasPublish() %}
+            {{subscribe(asyncapi.defaultContentType(), channelName, channel.parameters())}}
+            {%- endif %}
+            {%- endif %}
+        {%- endfor %}
+    }
+}

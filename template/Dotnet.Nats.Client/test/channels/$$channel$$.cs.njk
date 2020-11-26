@@ -1,0 +1,34 @@
+
+{%- from "../../../../partials/channel/Publish.njk" import publish %}
+{%- from "../../../../partials/channel/Reply.njk" import reply %}
+{%- from "../../../../partials/channel/Request.njk" import request %}
+{%- from "../../../../partials/channel/Subscribe.njk" import subscribe %}
+using NATS.Client;
+using Dotnet.Nats.Client;
+using System;
+using System.Text;
+
+namespace Dotnet.Nats.TestClient.channels
+{
+    class {{channelName | pascalCase}}
+    {
+{%- if channel | isRequestReply %}
+  {%- if channel | isRequester %}
+  {{ reply(channelName, channel.parameters(), channel.publish().message(0), channel.subscribe().message(0)) }}
+  {%- endif %}
+  {%- if channel | isReplier %}
+  {{ request(channelName, channel.parameters(), channel.subscribe().message(0), channel.publish().message(0)) }}
+  {%- endif %}
+{%- endif %}
+
+{%- if channel | isPubsub %}
+  {%- if channel.hasSubscribe() %}
+  {{ subscribe(channelName, channel.parameters(), channel.subscribe().message(0)) }}
+  {%- endif %}
+  {%- if channel.hasPublish() %}
+  {{ publish(channelName, channel.parameters(), channel.publish().message(0)) }}
+  {%- endif %}
+{%- endif %}
+
+    }
+}

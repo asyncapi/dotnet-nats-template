@@ -1,0 +1,29 @@
+
+{% macro request(defaultContentType, channelName, requestMessage, replyMessage, messageDescription, channelParameters) %}
+public {%- if replyMessage.payload() | messageHasNotNullPayload %} {{replyMessage | getMessageType}}NameSpace.{{replyMessage | getMessageType}} {%- else %} void {%- endif %} Request{{channelName | pascalCase }}(
+  {%- if requestMessage.payload() | messageHasNotNullPayload %}
+   {{requestMessage | getMessageType}}NameSpace.{{requestMessage | getMessageType}} requestMessage 
+  {% endif %}
+  {% if channelParameters | length %}
+    {%- if requestMessage.payload() | messageHasNotNullPayload %},{% endif %}{{channelParameters | realizeParametersForChannel}}
+  {% endif %}
+)
+{
+    if (IsConnected())
+    {
+      return {{ channelName | pascalCase }}.Request(
+        logger,
+        connection, 
+      {%- if requestMessage.payload() | messageHasNotNullPayload %}
+        requestMessage
+      {% endif %}
+      {% if channelParameters | length %}
+        {%- if requestMessage.payload() | messageHasNotNullPayload %},{% endif %}{{channelParameters | realizeParametersForChannelWithoutType}}
+      {% endif %});
+    }
+    else
+    {
+      throw new ClientNotConnected();
+    }
+}
+{% endmacro %}
