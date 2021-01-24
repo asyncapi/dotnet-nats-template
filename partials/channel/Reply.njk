@@ -55,7 +55,7 @@ public static IAsyncSubscription Reply(
         
     };
     logger.Info(${{channelParameters | realizeChannelName(channelName) | safe }} + "subscribing to channel");
-    return connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe }}, {%- if (replyMessage | hasNatsBindings) and (replyMessage.bindings().nats().queue() | length) %}"{{replyMessage.bindings().nats().queue()}}",{%- endif %} handler);
+    return connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe }}, {%- if (replyMessage | hasNatsBindings) and (replyMessage.binding("nats").queue | length) %}"{{replyMessage.binding("nats").queue}}",{%- endif %} handler);
 
 }
 {% endmacro %}

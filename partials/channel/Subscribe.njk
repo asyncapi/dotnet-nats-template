@@ -39,7 +39,7 @@ public static IAsyncSubscription Subscribe(
         
     };
     logger.Debug("Subscribing to" + ${{channelParameters | realizeChannelName(channelName) | safe}});
-    return connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe}}, {%- if  (subscribtionMessage | hasNatsBindings) and (subscribtionMessage.bindings().nats().queue() | length) %}"{{subscribtionMessage.bindings().nats().queue()}}",{%- endif %} handler);
+    return connection.SubscribeAsync(${{channelParameters | realizeChannelName(channelName) | safe}}, {%- if  (subscribtionMessage | hasNatsBindings) and (subscribtionMessage.binding("nats").queue | length) %}"{{subscribtionMessage.binding("nats").queue}}",{%- endif %} handler);
 
 }
 {% endmacro %}

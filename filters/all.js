@@ -139,7 +139,7 @@ filter.realizeParametersForChannel = (parameters, required = true) => {
  * Does an object have bindings
  */
 filter.hasNatsBindings = obj => {
-	return obj.bindings() && obj.bindings().nats();
+	return obj.hasBinding("nats");
 }
 
 /**
