@@ -19,9 +19,9 @@ namespace Dotnet.Nats.Client
 {%- for channelName, channel in asyncapi.channels() %}
     {%- if channel | isRequestReply %}
     {%- if channel | isReplier %}
-    public delegate {%- if channel.publish().message(0).payload() | messageHasNotNullPayload %} {{channel.publish().message(0)  | getMessageType}}NameSpace.{{channel.publish().message(0) | getMessageType}}{% else %} void{% endif %} {{channelName | pascalCase}}OnRequest(
-        {%- if channel.subscribe().message(0).payload() | messageHasNotNullPayload %}
-        {{channel.subscribe().message(0)  | getMessageType}}NameSpace.{{ channel.subscribe().message(0) | getMessageType }} request
+    public delegate {%- if channel.subscribe().message(0).payload() | messageHasNotNullPayload %} {{channel.subscribe().message(0)  | getMessageType}}NameSpace.{{channel.subscribe().message(0) | getMessageType}}{% else %} void{% endif %} {{channelName | pascalCase}}OnRequest(
+        {%- if channel.publish().message(0).payload() | messageHasNotNullPayload %}
+        {{channel.publish().message(0)  | getMessageType}}NameSpace.{{ channel.publish().message(0) | getMessageType }} request
         {% endif %}
         {% if channel.parameters() | length %}
             ,{{channel.parameters() | realizeParametersForChannel}}
