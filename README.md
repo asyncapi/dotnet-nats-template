@@ -21,8 +21,6 @@ Information about the generated files and a description can be found under [the 
 Install the generator through [npm or run it from docker official installer](https://github.com/asyncapi/generator#install).
 
 ## Example usage
-The leading examples are both in TypeScript and in Node.js since this template can be used for both. The example code will be used later in the documentation to explain the different features.
-
 Given any AsyncAPI file (`AsyncAPI.yml`) first generate the client with the [AsyncAPI generator](https://github.com/asyncapi/generator) such as 
 ```bash
 ag --install --output ./nats-client ./AsyncAPI.yml @asyncapi/dotnet-nats-template
