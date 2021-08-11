@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
@@ -27,7 +27,9 @@
     "lint:fix": "npm run lint -- --fix",
     "generate:assets": "echo \"Nothing to generate\"",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
-    "release": "semantic-release"
+    "release": "semantic-release",
+    "contributors:add": "all-contributors add",
+    "contributors:generate": "all-contributors generate"
   },
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.11"
@@ -40,6 +42,7 @@
     "@semantic-release/github": "^7.0.4",
     "@semantic-release/npm": "^7.0.3",
     "@semantic-release/release-notes-generator": "^9.0.1",
+    "all-contributors-cli": "^6.20.0",
     "conventional-changelog-conventionalcommits": "^4.2.3",
     "eslint": "^7.0.0",
     "eslint-plugin-mocha": "^7.0.1",

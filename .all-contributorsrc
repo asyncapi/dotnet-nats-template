@@ -1,4 +1,8 @@
 {
+  "projectName": "dotnet-nats-template",
+  "projectOwner": "@asyncapi",
+  "repoType": "github",
+  "repoHost": "https://github.com",
   "files": [
     "README.md"
   ],
@@ -11,20 +15,24 @@
       "avatar_url": "https://avatars.githubusercontent.com/u/13396189?v=4",
       "profile": "https://github.com/jonaslagoni",
       "contributions": [
-        "bug",
-        "maintenance",
         "code",
-        "doc",
-        "ideas",
+        "maintenance",
         "question",
-        "test"
+        "ideas",
+        "doc",
+        "bug"
       ]
     },
+    {
+      "login": "derberg",
+      "name": "Lukasz Gornicki",
+      "avatar_url": "https://avatars.githubusercontent.com/u/6995927?v=4",
+      "profile": "https://dev.to/derberg",
+      "contributions": [
+        "review"
+      ]
+    }
   ],
   "contributorsPerLine": 7,
-  "projectName": "dotnet-nats-template",
-  "projectOwner": "asyncapi",
-  "repoType": "github",
-  "repoHost": "https://github.com",
-  "skipCi": true
+  "commitConvention": "none"
 }
