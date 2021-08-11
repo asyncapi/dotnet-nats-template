@@ -18,27 +18,32 @@ import publish from '../components/client/publish';
  * @returns 
  */
 export default function clientFile({ asyncapi }) {
+  const channelIterator = Object.entries(asyncapi.channels());
   const delegates = [];
-  for (const [channelName, channel] of asyncapi.channels().filter(([, channel]) => {return channel.hasPublish();})) {
+  for (const [channelName, channel] of channelIterator) {
+    if (!channel.hasPublish()) continue;
+    const channelParameterEntries = Object.entries(channel.parameters());
+    const channelPublishMessage = channel.publish().message(0);
     const delegateParameters = [];
-    if (messageHasNotNullPayload(channel.publish().message(0).payload())) {
-      const messageType = getMessageType(channel.publish().message(0));
+    if (messageHasNotNullPayload(channelPublishMessage.payload())) {
+      const messageType = getMessageType(channelPublishMessage);
       delegateParameters.push(`${messageType}NameSpace.${messageType} request`);
     }
     if (channel.parameters().length > 0) {
-      delegateParameters.push(realizeParametersForChannel(channel.parameters()));
+      delegateParameters.push(realizeParametersForChannel(channelParameterEntries));
     }
     delegates.push(`public delegate void ${pascalCase(channelName)}OnRequest(
       ${delegateParameters.join(',\n')}
     );`);
   }
   const channels = [];
-  for (const [channelName, channel] of asyncapi.channels()) {
+  for (const [channelName, channel] of channelIterator) {
+    const channelParameterEntries = Object.entries(channel.parameters());
     if (channel.hasSubscribe()) {
-      channels.push(subscribe(asyncapi.defaultContentType(), channelName, channel.parameters()));
+      channels.push(subscribe(channelName, channelParameterEntries));
     }
     if (channel.hasPublish()) {
-      channels.push(publish(asyncapi.defaultContentType(), channelName, channel.subscribe().message(0), channel.description(), channel.parameters()));
+      channels.push(publish(channelName, channel.publish().message(0), channelParameterEntries));
     }
   }
 

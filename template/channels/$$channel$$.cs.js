@@ -18,6 +18,7 @@ import subscribe from '../../components/channel/subscribe';
  * @returns 
  */
 export default function clientFile({ channelName, channel }) {
+  const channelParameterEntries = Object.entries(channel.parameters());
   return <File name={`${pascalCase(channelName)}.cs`}>
     {
       `using NATS.Client;
@@ -28,8 +29,8 @@ namespace Dotnet.Nats.Client.channels
 {
   class ${pascalCase(channelName)}
   {
-${channel.hasSubscribe() && subscribe(channelName, channel.parameters(), channel.subscribe().message(0)), channel.subscribe().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined}
-${channel.hasPublish() && publish(channelName, channel.parameters(), channel.publish().message(0))}
+${channel.hasSubscribe() ? subscribe(channelName, channelParameterEntries, channel.subscribe().message(0), channel.subscribe().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined) : ''}
+${channel.hasPublish() ? publish(channelName, channelParameterEntries, channel.publish().message(0)) : ''}
   }
 }`
     }

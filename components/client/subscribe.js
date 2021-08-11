@@ -1,6 +1,6 @@
 import { pascalCase, realizeParametersForChannelWithoutType, realizeParametersForChannel } from '../../utils/general';
 
-export default function subscribe(channelName, message, channelParameters) {
+export default function subscribe(channelName, channelParameters) {
   const pascalChannel = pascalCase(channelName);
   const functionParameters = [`${pascalChannel}OnRequest onRequest`];
   const operationFunctions = ['logger', 'connection', 'onRequest'];
@@ -14,8 +14,7 @@ export default function subscribe(channelName, message, channelParameters) {
 ){
   if (IsConnected())
   {
-    return ${pascalChannel}.Subscribe(
-      ${operationFunctions.join(',\n')}
+    return ${pascalChannel}.Subscribe(${operationFunctions.join(',\n')});
   }
   else
   {

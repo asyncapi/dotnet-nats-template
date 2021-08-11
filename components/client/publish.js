@@ -20,8 +20,7 @@ export default function publish(channelName, message, channelParameters) {
   {
   if (IsConnected())
   {
-    ${pascalChannel}.Publish(
-    ${operationFunctions.join(',\n')});
+    ${pascalChannel}.Publish(${operationFunctions.join(',\n')});
   }
   else
   {

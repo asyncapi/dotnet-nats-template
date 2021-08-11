@@ -23,17 +23,18 @@ export default function subscribe(channelName, channelParameters, subscriptionMe
   ${deserializer(subscriptionMessage)}
   public static IAsyncSubscription Subscribe(
     ${functionParameters.join(',\n')}
+  )
   {
     EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
     {
-      logger.Debug("Got message for channel subscription: " + ${realizedChannelPath});
+      logger.Debug("Got message for channel subscription: " + $${realizedChannelPath});
       var deserializedMessage = JsonDeserializer(logger, (byte[])args.ReceivedObject);
 
       ${channelParameterUnwrap(channelName, channelParameters)}
       
       onRequest(${requestParameters.join(',\n')});
     };
-    logger.Debug("Subscribing to: " + ${realizedChannelPath});
-    return connection.SubscribeAsync(${subscribeParameters.join(',')});
+    logger.Debug("Subscribing to: " + $${realizedChannelPath});
+    return connection.SubscribeAsync($${subscribeParameters.join(',')});
   }`;
 }

@@ -10,7 +10,7 @@ export default function publish(channelName, channelParameters, publishMessage) 
     functionParameters.push(realizeParametersForChannel(channelParameters));
   }
   const realizedChannelPath = realizeChannelName(channelParameters, channelName);
-  let publishCode = `connection.Publish(${realizedChannelPath}, Encoding.UTF8.GetBytes("null"));}`;
+  let publishCode = `connection.Publish($${realizedChannelPath}, Encoding.UTF8.GetBytes("null"));}`;
   if (messageHasNotNullPayload(publishMessage.payload())) {
     publishCode = `var serializedObject = JsonSerializer(logger, requestMessage); 
   connection.Publish(${realizedChannelPath}, serializedObject);`;
@@ -21,7 +21,7 @@ ${serializer(publishMessage)}
 public static void Publish(
   ${functionParameters.join(',\n')}
 ){
-  logger.Debug("Publishing to channel " + ${realizedChannelPath});
+  logger.Debug("Publishing to channel: " + $${realizedChannelPath});
   ${publishCode}
 }`;
 }

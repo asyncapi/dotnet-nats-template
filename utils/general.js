@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { FormatHelpers } from '@asyncapi/modelina';
 // eslint-disable-next-line no-unused-vars
 import { Message, Schema, AsyncAPIDocument } from '@asyncapi/parser';
 const contentTypeJSON = 'application/json';
@@ -41,7 +40,7 @@ export function kebabCase(string) {
  * @returns 
  */
 export function getSchemaFileName(schemaName) {
-  return FormatHelpers.toPascalCase(schemaName);
+  return pascalCase(schemaName);
 }
 
 /**
@@ -170,31 +169,6 @@ export function containsJsonPayload(document) {
 
 /**
  * Convert JSON schema draft 7 types to typescript types 
- * 
- * @param {string} jsonSchemaType 
- * @param {string} property 
- */
-export function toTsType(jsonSchemaType, property) {
-  switch (jsonSchemaType.toLowerCase()) {
-  case 'string':
-    return 'string';
-  case 'integer':
-  case 'number':
-    return 'Number';
-  case 'boolean':
-    return 'Boolean';
-  case 'object':
-    if (property) {
-      return `${property.uid()}Schema`;
-    }
-    return 'any';
-
-  default: return 'any';
-  }
-}
-
-/**
- * Convert JSON schema draft 7 types to typescript types 
  * @param {*} jsonSchemaType 
  * @param {*} property 
  */
@@ -219,18 +193,40 @@ export function toCType(jsonSchemaType, property) {
 }
 
 /**
+ * Cast JSON schema variable to csharp type
+ * 
+ * @param {*} jsonSchemaType 
+ * @param {*} variableToCast 
+ */
+export function castToCType(jsonSchemaType, variableToCast) {
+  switch (jsonSchemaType.toLowerCase()) {
+  case 'string':
+    return `$"{${variableToCast}}"`;
+  case 'integer':
+    return `int.Parse(${variableToCast})`;
+  case 'number':
+    return `decimal.Parse(${variableToCast}, System.Globalization.CultureInfo.InvariantCulture)`;
+  case 'boolean':
+    return `bool.Parse(${variableToCast})`;
+  default: throw new Error(`Parameter type not supported - ${  jsonSchemaType}`);
+  }
+}
+
+/**
  * Convert RFC 6570 URI with parameters to NATS topic. 
  */
 export function realizeChannelName(parameters, channelName) {
   let returnString = `"${channelName}"`;
   returnString = returnString.replace(/\//g, '.');
-  for (const paramName in parameters) {
-    returnString = returnString.replace(`\${${paramName}}`, `{${paramName}}`);
+  if (parameters) {
+    for (const [paramName,] of parameters) {
+      returnString = returnString.replace(`\${${paramName}}`, `{${paramName}}`);
+    }
   }
   return returnString;
 }
 export function realizeChannelNameWithoutParameters(channelName) {
-  return realizeChannelName(null, channelName);
+  return realizeChannelName(undefined, channelName);
 };
 
 /**
@@ -238,7 +234,7 @@ export function realizeChannelNameWithoutParameters(channelName) {
  */
 export function realizeParametersForChannelWithoutType(parameters) {
   let returnString = '';
-  for (const paramName in parameters) {
+  for (const [paramName,] of parameters) {
     returnString += `${paramName},`;
   }
   if (returnString.length >= 1) {
@@ -253,9 +249,9 @@ export function realizeParametersForChannelWithoutType(parameters) {
 export function realizeParametersForChannel(parameters, required = true) {
   let returnString = '';
   const requiredType = !required ? '?' : '';
-  for (const paramName in parameters) {
+  for (const [paramName, parameter] of parameters) {
     returnString += `${toCType(
-      parameters[String(paramName)].schema().type()
+      parameter.schema().type()
     )}${requiredType} ${paramName},`;
   }
   if (returnString.length >= 1) {
