@@ -17,10 +17,13 @@ export default async function modelRenderer({ asyncapi }) {
   const generatedModels = await typescriptGenerator.generate(asyncapi);
   const files = [];
   for (const generatedModel of generatedModels) {
-    const modelFileName = `${FormatHelpers.toPascalCase(generatedModel.modelName)}.cs`;
+    const className = FormatHelpers.toPascalCase(generatedModel.modelName);
+    const modelFileName = `${className}.cs`;
     const fileContent = `
 ${generatedModel.dependencies.join('\n')}
-${generatedModel.result}
+namespace Asyncapi.Nats.Client.Models {
+  ${generatedModel.result}
+}
     `;
     files.push(<File name={modelFileName}>{fileContent}</File>);
   }

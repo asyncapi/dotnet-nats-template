@@ -1,5 +1,5 @@
 using System;
-namespace Dotnet.Nats.Client
+namespace Asyncapi.Nats.Client
 {
   public interface LoggingInterface
   {

@@ -1,6 +1,6 @@
 using System;
 
-namespace Dotnet.Nats.Client
+namespace Asyncapi.Nats.Client
 {
   [Serializable()]
   public class ClientNotConnected : System.Exception

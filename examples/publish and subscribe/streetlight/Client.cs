@@ -1,15 +1,17 @@
-namespace Dotnet.Nats.Client
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Asyncapi.Nats.Client.Channels;
+using Asyncapi.Nats.Client.Models;
+using NATS.Client;
+namespace Asyncapi.Nats.Client
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
-  using Dotnet.Nats.Client.channels;
-  using NATS.Client;
 
-  public delegate void StreetlightStreetlightIdCommandTurnonOnRequest(
-      AnonymousSchema1NameSpace.AnonymousSchema1 request
+  public delegate void StreetlightStreetlightIdEventTurnonOnRequest(
+      AnonymousSchema_3 request,
+String streetlight_id
     );
 
   public class NatsClient
@@ -107,7 +109,7 @@ namespace Dotnet.Nats.Client
         this.Logger = logger;
     }
     public void PublishToStreetlightStreetlightIdCommandTurnon(
-  AnonymousSchema1NameSpace.AnonymousSchema1 requestMessage ,
+  AnonymousSchema_1 requestMessage,
 String streetlight_id
 )
   {

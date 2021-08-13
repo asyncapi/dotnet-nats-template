@@ -28,7 +28,7 @@ export default function subscribe(channelName, channelParameters, subscriptionMe
     EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
     {
       logger.Debug("Got message for channel subscription: " + $${realizedChannelPath});
-      var deserializedMessage = JsonDeserializer(logger, (byte[])args.ReceivedObject);
+      var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);
 
       ${channelParameterUnwrap(channelName, channelParameters)}
       

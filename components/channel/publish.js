@@ -4,7 +4,7 @@ export default function publish(channelName, channelParameters, publishMessage) 
   const functionParameters = ['LoggingInterface logger', 'IEncodedConnection connection'];
   if (messageHasNotNullPayload(publishMessage.payload())) {
     const messageType = getMessageType(publishMessage);
-    functionParameters.push(`${messageType}NameSpace.${messageType} requestMessage `);
+    functionParameters.push(`${messageType} requestMessage`);
   }
   if (channelParameters.length > 0) {
     functionParameters.push(realizeParametersForChannel(channelParameters));
@@ -12,7 +12,7 @@ export default function publish(channelName, channelParameters, publishMessage) 
   const realizedChannelPath = realizeChannelName(channelParameters, channelName);
   let publishCode = `connection.Publish($${realizedChannelPath}, Encoding.UTF8.GetBytes("null"));}`;
   if (messageHasNotNullPayload(publishMessage.payload())) {
-    publishCode = `var serializedObject = JsonSerializer(logger, requestMessage); 
+    publishCode = `var serializedObject = JsonSerializerSupport(logger, requestMessage); 
   connection.Publish(${realizedChannelPath}, serializedObject);`;
   }
   return `

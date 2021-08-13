@@ -22,6 +22,7 @@
 					"name": "TurnonCommand",
 					"payload": {
 						"type": "object",
+						"additionalProperties": false,
 						"required": ["lumen"],
 						"properties": {
 							"lumen": {
@@ -48,6 +49,7 @@
 				"message": {
 					"payload": {
 						"type": "object",
+						"additionalProperties": false,
 						"required": ["lumen"],
 						"properties": {
 							"lumen": {

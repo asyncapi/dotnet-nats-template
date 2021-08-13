@@ -25,7 +25,7 @@ export function channelParameterUnwrap(channelName, channelParameters) {
 
   const parameterVariables = [];
   let prevParameterVariableName;
-  let counter = 1;
+  let counter = 0;
   for (const [parameterName, parameter] of channelParameters) {
     const camelCasedParameterName = camelCase(parameterName);
     if (counter === 0) {

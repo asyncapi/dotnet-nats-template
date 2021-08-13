@@ -21,15 +21,15 @@ export default function clientFile({ asyncapi }) {
   const channelIterator = Object.entries(asyncapi.channels());
   const delegates = [];
   for (const [channelName, channel] of channelIterator) {
-    if (!channel.hasPublish()) continue;
+    if (channel.hasPublish()) continue;
     const channelParameterEntries = Object.entries(channel.parameters());
-    const channelPublishMessage = channel.publish().message(0);
+    const channelPublishMessage = channel.subscribe().message(0);
     const delegateParameters = [];
     if (messageHasNotNullPayload(channelPublishMessage.payload())) {
       const messageType = getMessageType(channelPublishMessage);
-      delegateParameters.push(`${messageType}NameSpace.${messageType} request`);
+      delegateParameters.push(`${messageType} request`);
     }
-    if (channel.parameters().length > 0) {
+    if (channelParameterEntries.length > 0) {
       delegateParameters.push(realizeParametersForChannel(channelParameterEntries));
     }
     delegates.push(`public delegate void ${pascalCase(channelName)}OnRequest(
@@ -49,15 +49,16 @@ export default function clientFile({ asyncapi }) {
 
   return <File name={'Client.cs'}>
     {
-      `namespace Dotnet.Nats.Client
+      `using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Asyncapi.Nats.Client.Channels;
+using Asyncapi.Nats.Client.Models;
+using NATS.Client;
+namespace Asyncapi.Nats.Client
 {
-  using System;
-  using System.Collections.Generic;
-  using System.Linq;
-  using System.Text;
-  using System.Threading.Tasks;
-  using Dotnet.Nats.Client.channels;
-  using NATS.Client;
 
   ${delegates.join('\n')}
 

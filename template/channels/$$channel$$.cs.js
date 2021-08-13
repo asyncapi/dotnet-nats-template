@@ -24,8 +24,10 @@ export default function clientFile({ channelName, channel }) {
       `using NATS.Client;
 using System;
 using System.Text;
+using System.Text.Json;
+using Asyncapi.Nats.Client.Models;
 
-namespace Dotnet.Nats.Client.channels
+namespace Asyncapi.Nats.Client.Channels
 {
   class ${pascalCase(channelName)}
   {

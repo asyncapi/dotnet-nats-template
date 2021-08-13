@@ -5,7 +5,7 @@ export default function publish(channelName, message, channelParameters) {
   const operationFunctions = ['logger', 'connection'];
   if (messageHasNotNullPayload(message.payload())) {
     const messageType = getMessageType(message);
-    functionParameters.push(`${messageType}NameSpace.${messageType} requestMessage `);
+    functionParameters.push(`${messageType} requestMessage`);
     operationFunctions.push('requestMessage');
   }
   if (channelParameters.length > 0) {

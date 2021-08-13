@@ -1,6 +1,7 @@
 import _ from 'lodash';
 // eslint-disable-next-line no-unused-vars
 import { Message, Schema, AsyncAPIDocument } from '@asyncapi/parser';
+import { FormatHelpers } from '@asyncapi/modelina';
 const contentTypeJSON = 'application/json';
 const contentTypeString = 'text/plain';
 const contentTypeBinary = 'application/octet-stream';
@@ -40,7 +41,7 @@ export function kebabCase(string) {
  * @returns 
  */
 export function getSchemaFileName(schemaName) {
-  return pascalCase(schemaName);
+  return FormatHelpers.toPascalCase(schemaName);
 }
 
 /**
