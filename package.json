@@ -27,7 +27,7 @@
     "lint:fix": "npm run lint -- --fix",
     "generate:assets": "npm run generate:examples",
 		"generate:examples": "npm run generate:examples:pubsub",
-		"generate:examples:pubsub": "cd \"examples/publish and subscribe\" && sh Generate.sh",
+		"generate:examples:pubsub": "cd \"examples/publish and subscribe\" && ./Generate.sh",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "release": "semantic-release",
     "contributors:add": "all-contributors add",
