@@ -1,6 +1,6 @@
 import _ from 'lodash';
 // eslint-disable-next-line no-unused-vars
-import { Message, Schema, AsyncAPIDocument } from '@asyncapi/parser';
+import { Message, Schema } from '@asyncapi/parser';
 import { FormatHelpers } from '@asyncapi/modelina';
 const contentTypeJSON = 'application/json';
 const contentTypeString = 'text/plain';
@@ -72,22 +72,6 @@ export function isJsonPayload(messageContentType, defaultContentType) {
 }
 
 /**
- * Based on the payload type of the message choose a client
- * 
- * @param {Message} message 
- * @param {string} defaultContentType 
- */
-export function getClientToUse(message, defaultContentType) {
-  if (isBinaryPayload(message.contentType(), defaultContentType)) {
-    return 'const nc: Client = this.binaryClient!;';
-  } else if (isStringPayload(message.contentType(), defaultContentType)) {
-    return 'const nc: Client = this.stringClient!;';
-  }
-  //Default to JSON client
-  return 'const nc: Client = this.jsonClient!;';
-}
-
-/**
  * Checks if the message payload is of type null
  * 
  * @param {Schema} messagePayload to check
@@ -107,65 +91,6 @@ export function getMessageType(message) {
     return 'null';
   }
   return `${getSchemaFileName(message.payload().uid())}`;
-}
-
-/**
- * Figure out if a content type is located in the document.
- * 
- * @param {AsyncAPIDocument} document to look through
- * @param {string} payload to find
- */
-function containsPayloadInDocument(document, payload) {
-  if (
-    document.hasDefaultContentType() &&
-    document.defaultContentType().toLowerCase() === payload
-  ) {
-    return true;
-  }
-  const channels = document.channels();
-  if (channels !== undefined) {
-    for (const key in document.channels()) {
-      if (Object.hasOwnProperty.call(document.channels(), key)) {
-        const channel = document.channels()[`${key}`];
-        if (
-          (channel.hasPublish() &&
-            channel
-              .publish()
-              .message()
-              .contentType() !== undefined &&
-            channel
-              .publish()
-              .message()
-              .contentType()
-              .toLowerCase() === payload) ||
-          (channel.hasSubscribe() &&
-            channel
-              .subscribe()
-              .message()
-              .contentType() !== undefined &&
-            channel
-              .subscribe()
-              .message()
-              .contentType()
-              .toLowerCase() === payload)
-        ) {
-          return true;
-        }
-      }
-    }
-  }
-  return false;
-}
-export function containsBinaryPayload(document) {
-  return containsPayloadInDocument(document, contentTypeBinary);
-}
-export function containsStringPayload(document) {
-  return containsPayloadInDocument(document, contentTypeString);
-}
-export function containsJsonPayload(document) {
-  const containsJsonPayload = containsPayloadInDocument(document, contentTypeJSON);
-  //Default to JSON type
-  return containsJsonPayload || (!containsBinaryPayload(document) && !containsStringPayload(document));
 }
 
 /**
