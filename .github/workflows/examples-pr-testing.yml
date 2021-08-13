@@ -30,10 +30,7 @@ jobs:
         run: | 
           npm cache clean --force
           npm install --loglevel verbose
-      - name: Test
-        run: npm test
-      - if: steps.packagejson.outputs.exists == 'true'
-        name: Run linter
-        run: npm run lint
       - name: Run release assets generation to make sure PR does not break it
+        run: npm run generate:examples
+      - name: Make sure examples can be build
         run: npm run generate:assets
