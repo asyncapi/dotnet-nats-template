@@ -2,23 +2,42 @@ import { camelCase, messageHasNotNullPayload, pascalCase, realizeChannelName, re
 import { deserializer } from './ChannelDeserializer';
 import {channelParameterUnwrap} from './ChannelParameterUnwrap';
 
-export default function subscribe(channelName, channelParameters, subscriptionMessage, queue = undefined) {
+function getFunctionParameters(channelParameters, channelName) {
   const functionParameters = ['LoggingInterface logger', 'IEncodedConnection connection', `${pascalCase(channelName)}OnRequest onRequest`];
   if (channelParameters.length > 0) {
     functionParameters.push(realizeParametersForChannel(channelParameters));
   }
-
+  return functionParameters;
+}
+function getRequestParameters(subscriptionMessage, channelParameters) {
   const requestParameters = [messageHasNotNullPayload(subscriptionMessage.payload()) ? 'deserializedMessage' : 'null'];
   for (const [parameterName,] of channelParameters) {
     requestParameters.push(`${camelCase(parameterName)}Param`);
   }
-  const realizedChannelPath = realizeChannelName(channelParameters, channelName);
-
+  return requestParameters;
+}
+function getSubscribeParameters(realizedChannelPath, queue) {
   const subscribeParameters = [realizedChannelPath];
   if (queue) {
     subscribeParameters.push(`"${queue}"`);
   }
   subscribeParameters.push('handler');
+  return subscribeParameters;
+}
+/**
+ * Returns the channel subscribe function that subscribes the client to topic
+ * 
+ * @param {*} channelName 
+ * @param {*} channelParameters 
+ * @param {*} subscriptionMessage 
+ * @param {*} queue 
+ */
+export default function subscribe(channelName, channelParameters, subscriptionMessage, queue = undefined) {
+  const functionParameters = getFunctionParameters(channelParameters, channelName);
+  const requestParameters = getRequestParameters(subscriptionMessage, channelParameters);
+  const realizedChannelPath = realizeChannelName(channelParameters, channelName);
+  const subscribeParameters = getSubscribeParameters(realizedChannelPath, queue);
+
   return `
   ${deserializer(subscriptionMessage)}
   public static IAsyncSubscription Subscribe(

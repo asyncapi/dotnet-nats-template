@@ -35,6 +35,5 @@ jobs:
       - if: steps.packagejson.outputs.exists == 'true'
         name: Run linter
         run: npm run lint
-      - if: steps.packagejson.outputs.exists == 'true'
-        name: Run release assets generation to make sure PR does not break it
+      - name: Run release assets generation to make sure PR does not break it
         run: npm run generate:assets

@@ -1,26 +1,37 @@
 import { getMessageType, messageHasNotNullPayload, pascalCase, realizeParametersForChannelWithoutType, realizeParametersForChannel } from '../../utils/general';
 
-export default function publish(channelName, message, channelParameters) {
+function getFunctionAndOperationParameters(message, channelParameters) { 
   const functionParameters = [];
-  const operationFunctions = ['logger', 'connection'];
+  const operationParameters = ['logger', 'connection'];
   if (messageHasNotNullPayload(message.payload())) {
     const messageType = getMessageType(message);
     functionParameters.push(`${messageType} requestMessage`);
-    operationFunctions.push('requestMessage');
+    operationParameters.push('requestMessage');
   }
   if (channelParameters.length > 0) {
     functionParameters.push(realizeParametersForChannel(channelParameters)); 
-    operationFunctions.push(realizeParametersForChannelWithoutType(channelParameters));
+    operationParameters.push(realizeParametersForChannelWithoutType(channelParameters));
   }
+  return {functionParameters, operationParameters};
+}
+
+/**
+ * Returns the client function wrapper which calls the channel publish function.
+ * 
+ * @param {*} channelName 
+ * @param {*} message 
+ * @param {*} channelParameters 
+ */
+export default function publish(channelName, message, channelParameters) {
   const pascalChannel = pascalCase(channelName);
-  
+  const {functionParameters, operationParameters} = getFunctionAndOperationParameters(message, channelParameters);
   return `public void PublishTo${pascalChannel}(
   ${functionParameters.join(',\n')}
 )
   {
   if (IsConnected())
   {
-    ${pascalChannel}.Publish(${operationFunctions.join(',\n')});
+    ${pascalChannel}.Publish(${operationParameters.join(',\n')});
   }
   else
   {

@@ -1,5 +1,9 @@
 import { getMessageType, messageHasNotNullPayload } from '../../utils/general';
 
+/**
+ * Returns the serializer code for the channel
+ * @param {*} message 
+ */
 export function serializer(message) {
   if (!messageHasNotNullPayload(message.payload())) return '';
   const messageType = getMessageType(message);

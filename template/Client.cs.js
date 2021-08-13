@@ -5,22 +5,9 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
 import { getMessageType, messageHasNotNullPayload, pascalCase, realizeParametersForChannel } from '../utils/general';
 import subscribe from '../components/client/subscribe';
 import publish from '../components/client/publish';
-
-/**
- * @typedef RenderArgument
- * @type {object}
- * @property {AsyncAPIDocument} asyncapi received from the generator.
- */
-
-/**
- * 
- * @param {RenderArgument} param0 
- * @returns 
- */
-export default function clientFile({ asyncapi }) {
-  const channelIterator = Object.entries(asyncapi.channels());
+function getDelegates(channels) {
   const delegates = [];
-  for (const [channelName, channel] of channelIterator) {
+  for (const [channelName, channel] of channels) {
     if (channel.hasPublish()) continue;
     const channelParameterEntries = Object.entries(channel.parameters());
     const channelPublishMessage = channel.subscribe().message(0);
@@ -36,16 +23,36 @@ export default function clientFile({ asyncapi }) {
       ${delegateParameters.join(',\n')}
     );`);
   }
-  const channels = [];
-  for (const [channelName, channel] of channelIterator) {
+  return delegates;
+}
+function getChannelWrappers(channels) {
+  const channelWrappers = [];
+  for (const [channelName, channel] of channels) {
     const channelParameterEntries = Object.entries(channel.parameters());
     if (channel.hasSubscribe()) {
-      channels.push(subscribe(channelName, channelParameterEntries));
+      channelWrappers.push(subscribe(channelName, channelParameterEntries));
     }
     if (channel.hasPublish()) {
-      channels.push(publish(channelName, channel.publish().message(0), channelParameterEntries));
+      channelWrappers.push(publish(channelName, channel.publish().message(0), channelParameterEntries));
     }
   }
+  return channelWrappers;
+}
+/**
+ * @typedef RenderArgument
+ * @type {object}
+ * @property {AsyncAPIDocument} asyncapi received from the generator.
+ */
+
+/**
+ * 
+ * @param {RenderArgument} param0 
+ * @returns 
+ */
+export default function clientFile({ asyncapi }) {
+  const channelIterator = Object.entries(asyncapi.channels());
+  const delegates = getDelegates(channelIterator);
+  const channelWrappers = getChannelWrappers(channelIterator);
 
   return <File name={'Client.cs'}>
     {
@@ -74,7 +81,7 @@ namespace Asyncapi.Nats.Client
     {
         this.Logger = logger;
     }
-    ${channels.join('\n')}
+    ${channelWrappers.join('\n')}
   }
 }`
     }

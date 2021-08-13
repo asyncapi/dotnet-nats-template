@@ -1,7 +1,6 @@
 import { camelCase, realizeChannelNameWithoutParameters, castToCType } from '../../utils/general';
 
-export function channelParameterUnwrap(channelName, channelParameters) {
-  if (channelParameters.length === 0) return '';
+function getParameterSplitVariables(channelParameters) {
   const parameterSplitVariables = [];
   let prevParameterSplitVariableName = undefined;
   for (const [parameterName,] of channelParameters) {
@@ -13,16 +12,10 @@ export function channelParameterUnwrap(channelName, channelParameters) {
     }
     prevParameterSplitVariableName = camelCasedParameterName;
   }
+  return parameterSplitVariables;
+}
 
-  const parameterSplits = [];
-  let lastParameterName;
-  for (const [parameterName,] of channelParameters) {
-    const camelCasedParameterName = camelCase(parameterName);
-    parameterSplits.push(`${camelCasedParameterName}Split[0]`);
-    lastParameterName = camelCasedParameterName;
-  }
-  parameterSplits.push(`${lastParameterName}Split[1]`);
-
+function getParameterVariables(channelParameters) {
   const parameterVariables = [];
   let prevParameterVariableName;
   let counter = 0;
@@ -39,14 +32,43 @@ export function channelParameterUnwrap(channelName, channelParameters) {
     counter++;
     prevParameterVariableName = camelCasedParameterName;
   }
+  return parameterVariables;
+}
+
+function getParameterSplits(channelParameters) {
+  const parameterSplits = [];
+  let lastParameterName;
+  for (const [parameterName,] of channelParameters) {
+    const camelCasedParameterName = camelCase(parameterName);
+    parameterSplits.push(`${camelCasedParameterName}Split[0]`);
+    lastParameterName = camelCasedParameterName;
+  }
+  parameterSplits.push(`${lastParameterName}Split[1]`);
+  return parameterSplits;
+}
+
+/**
+ * Returns the channel parameter unwrapping code.
+ * 
+ * Once a message is received, a topic is received along side it, 
+ * this could be "streetlight.1.event.turnon" where the AsyncAPI channel is "streetlight.{streetlight_id}.event.turnon".
+ * 
+ * This unwrapping code makes sure that you get the received parameter "const streetlight_id = 1".
+ * 
+ * @param {*} channelName 
+ * @param {*} channelParameters 
+ */
+export function channelParameterUnwrap(channelName, channelParameters) {
+  if (channelParameters.length === 0) return '';
+  const parameterSplitVariables = getParameterSplitVariables(channelParameters);
+  const parameterSplits = getParameterSplits(channelParameters);
+  const parameterVariables = getParameterVariables(channelParameters);
+
   return `var unmodifiedChannel = ${realizeChannelNameWithoutParameters(channelName)};
   var channel = args.Subject;
-  
   ${parameterSplitVariables.join('\n')}
-  
   String[] splits = {
     ${parameterSplits.join(',\n')}
   };
-  
   ${parameterVariables.join('\n')}`;
 }
