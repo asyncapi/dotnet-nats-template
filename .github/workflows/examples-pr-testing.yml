@@ -30,7 +30,7 @@ jobs:
         run: | 
           npm cache clean --force
           npm install --loglevel verbose
-      - name: Run release assets generation to make sure PR does not break it
+      - name: Generate examples
         run: npm run generate:examples
-      - name: Make sure examples can be build
-        run: npm run generate:assets
+      - name: Build examples
+        run: npm run build:examples
