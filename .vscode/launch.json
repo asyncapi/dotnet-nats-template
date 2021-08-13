@@ -8,10 +8,10 @@
           "timeout": 10000,
           "sourceMaps": true,
           "args": [
-            "./examples/publish and subscribe/streetlight.json",
+            "./examples/pubsub/streetlight.json",
             "./",
             "--output",
-            "./examples/publish and subscribe/streetlight",
+            "./examples/pubsub/streetlight",
             "--force-write"
           ],
           "program": "./node_modules/@asyncapi/generator/cli.js"
