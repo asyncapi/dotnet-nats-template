@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Debug publish and subscribe example generation",
+          "timeout": 10000,
+          "sourceMaps": true,
+          "args": [
+            "./examples/pubsub/streetlight.json",
+            "./",
+            "--output",
+            "./examples/pubsub/streetlight",
+            "--force-write"
+          ],
+          "program": "./node_modules/@asyncapi/generator/cli.js"
+        }
+    ]
+}

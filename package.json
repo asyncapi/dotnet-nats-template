@@ -25,19 +25,27 @@
     "test": "echo \"No tests specified yet\"",
     "lint": "./node_modules/.bin/eslint --max-warnings 0 --config .eslintrc .",
     "lint:fix": "npm run lint -- --fix",
-    "generate:assets": "echo \"Nothing to generate\"",
+    "generate:assets": "npm run generate:examples",
+		"generate:examples": "npm run generate:examples:pubsub",
+		"generate:examples:pubsub": "cd \"examples/pubsub\" && sh ./Generate.sh",
+		"build:examples": "npm run build:examples:pubsub",
+		"build:examples:pubsub": "cd \"examples/pubsub\" && sh ./Build.sh",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "release": "semantic-release",
     "contributors:add": "all-contributors add",
     "contributors:generate": "all-contributors generate"
   },
   "dependencies": {
-    "@asyncapi/generator-react-sdk": "^0.2.11"
+    "@asyncapi/generator-react-sdk": "^0.2.11",
+    "@asyncapi/modelina": "^0.25.0",
+    "@asyncapi/parser": "^1.7.0",
+    "@babel/core": "^7.15.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
+    "@asyncapi/generator": "^1.8.0",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/github": "^7.0.4",
     "@semantic-release/npm": "^7.0.3",

@@ -1,0 +1,36 @@
+name: Examples PR testing
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, ready_for_review]
+
+jobs:
+  test:
+    if: github.event.pull_request.draft == false
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '3.1.x'
+      - name: Setup Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install dependencies
+        id: first-installation
+        run: npm install --loglevel verbose
+        continue-on-error: true
+      - name: Clear NPM cache and install deps again
+        run: | 
+          npm cache clean --force
+          npm install --loglevel verbose
+      - name: Generate examples
+        run: npm run generate:examples
+      - name: Build examples
+        run: npm run build:examples
