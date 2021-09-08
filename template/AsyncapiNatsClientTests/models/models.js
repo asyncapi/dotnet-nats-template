@@ -29,7 +29,7 @@ namespace Asyncapi.Nats.Client.Tests
     public class ${className}Test
     {
         [Fact]
-        public void Test1()
+        public void ShouldSerializeAndDeserializeAccurately()
         {
             ${className} temp = new ${className}();
             string json = JsonSerializer.Serialize(temp);
