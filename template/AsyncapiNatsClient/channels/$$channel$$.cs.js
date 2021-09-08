@@ -1,9 +1,9 @@
 import { File } from '@asyncapi/generator-react-sdk';
-import { pascalCase } from '../../utils/general';
+import { pascalCase } from '../../../utils/general';
 // eslint-disable-next-line no-unused-vars
 import { Channel } from '@asyncapi/parser';
-import publish from '../../components/channel/publish';
-import subscribe from '../../components/channel/subscribe';
+import publish from '../../../components/channel/publish';
+import subscribe from '../../../components/channel/subscribe';
 
 /**
  * @typedef RenderArgument

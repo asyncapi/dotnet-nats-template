@@ -12,19 +12,32 @@ import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
  * @param {RenderArgument} param0 
  * @returns 
  */
-export default async function modelRenderer({ asyncapi }) {
+export default async function modelTestRenderer({ asyncapi }) {
   const typescriptGenerator = new CSharpGenerator();
   const generatedModels = await typescriptGenerator.generate(asyncapi);
   const files = [];
   for (const generatedModel of generatedModels) {
     const className = FormatHelpers.toPascalCase(generatedModel.modelName);
-    const modelFileName = `${className}.cs`;
+    const modelFileName = `${className}Test.cs`;
     const fileContent = `
-${generatedModel.dependencies.join('\n')}
-namespace Asyncapi.Nats.Client.Models {
-  ${generatedModel.result}
-}
-    `;
+using System.Text.Json;
+using Asyncapi.Nats.Client.Models;
+using Xunit;
+
+namespace Asyncapi.Nats.Client.Tests
+{
+    public class ${className}Test
+    {
+        [Fact]
+        public void Test1()
+        {
+            ${className} temp = new ${className}();
+            string json = JsonSerializer.Serialize(temp);
+            ${className} output = JsonSerializer.Deserialize<${className}>(json);
+            Assert.Equal(temp, output);
+        }
+    }
+}`;
     files.push(<File name={modelFileName}>{fileContent}</File>);
   }
   return files;
