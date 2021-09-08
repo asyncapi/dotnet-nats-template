@@ -1,5 +1,5 @@
 import { File } from '@asyncapi/generator-react-sdk';
-import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
+import { CSharpGenerator, FormatHelpers, CSHARP_JSON_SERIALIZER_PRESET} from '@asyncapi/modelina';
 
 /**
  * @typedef RenderArgument
@@ -14,7 +14,7 @@ import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
  */
 export default async function modelRenderer({ asyncapi }) {
   //const typescriptGenerator = new CSharpGenerator({presets: [{preset: CSHARP_COMMON_PRESET}]});
-  const typescriptGenerator = new CSharpGenerator();
+  const typescriptGenerator = new CSharpGenerator({presets: [CSHARP_JSON_SERIALIZER_PRESET]});
   const generatedModels = await typescriptGenerator.generate(asyncapi);
   const files = [];
   for (const generatedModel of generatedModels) {
