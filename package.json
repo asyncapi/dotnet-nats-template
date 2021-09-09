@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
@@ -36,7 +36,7 @@
     "contributors:generate": "all-contributors generate"
   },
   "dependencies": {
-    "@asyncapi/generator-react-sdk": "^0.2.13",
+    "@asyncapi/generator-react-sdk": "^0.2.15",
     "@asyncapi/modelina": "^0.29.1",
     "@asyncapi/parser": "^1.9.0",
     "@babel/core": "^7.15.0"
