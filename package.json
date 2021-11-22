@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.2.45",
+  "version": "0.2.48",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
@@ -37,15 +37,15 @@
   },
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.20",
-    "@asyncapi/modelina": "^0.39.4",
-    "@asyncapi/parser": "^1.11.0",
+    "@asyncapi/modelina": "^0.39.6",
+    "@asyncapi/parser": "^1.11.1",
     "@babel/core": "^7.15.0"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@asyncapi/generator": "^1.8.19",
+    "@asyncapi/generator": "^1.8.22",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/github": "^7.0.4",
     "@semantic-release/npm": "^7.0.3",
