@@ -36,7 +36,7 @@
     "contributors:generate": "all-contributors generate"
   },
   "dependencies": {
-    "@asyncapi/generator-react-sdk": "^0.2.21",
+    "@asyncapi/generator-react-sdk": "^0.2.22",
     "@asyncapi/modelina": "^0.39.6",
     "@asyncapi/parser": "^1.12.0",
     "@babel/core": "^7.15.0"
