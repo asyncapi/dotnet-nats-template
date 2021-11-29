@@ -1,10 +1,10 @@
 import { File } from '@asyncapi/generator-react-sdk';
-import standard from '../components/client/standard';
+import standard from '../../components/client/standard';
 // eslint-disable-next-line no-unused-vars
 import { AsyncAPIDocument } from '@asyncapi/parser';
-import { getMessageType, messageHasNotNullPayload, pascalCase, realizeParametersForChannel } from '../utils/general';
-import subscribe from '../components/client/subscribe';
-import publish from '../components/client/publish';
+import { getMessageType, messageHasNotNullPayload, pascalCase, realizeParametersForChannel } from '../../utils/general';
+import subscribe from '../../components/client/subscribe';
+import publish from '../../components/client/publish';
 function getDelegates(channels) {
   const delegates = [];
   for (const [channelName, channel] of channels) {
