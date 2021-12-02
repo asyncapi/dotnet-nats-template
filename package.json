@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
