@@ -14,7 +14,7 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
  * @returns 
  */
 export default function asyncapiNatsClient({ params }) {
-  const version = `<Version>${params.version}</Version>`
+  const version = `<Version>${params.version}</Version>`;
   return <File name={'AsyncapiNatsClient.csproj'}>
     {`
 <Project Sdk="Microsoft.NET.Sdk">
