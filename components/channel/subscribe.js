@@ -10,7 +10,10 @@ function getFunctionParameters(channelParameters, channelName) {
   return functionParameters;
 }
 function getRequestParameters(subscriptionMessage, channelParameters) {
-  const requestParameters = [messageHasNotNullPayload(subscriptionMessage.payload()) ? 'deserializedMessage' : 'null'];
+  const requestParameters = [];
+  if (messageHasNotNullPayload(subscriptionMessage.payload())) {
+    requestParameters.push('deserializedMessage');
+  }
   for (const [parameterName,] of channelParameters) {
     requestParameters.push(`${camelCase(parameterName)}Param`);
   }
@@ -47,7 +50,7 @@ export default function subscribe(channelName, channelParameters, subscriptionMe
     EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
     {
       logger.Debug("Got message for channel subscription: " + $${realizedChannelPath});
-      var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);
+      ${messageHasNotNullPayload(subscriptionMessage.payload()) ? 'var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);' : ''}
 
       ${channelParameterUnwrap(channelName, channelParameters)}
       
