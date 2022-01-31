@@ -4,7 +4,6 @@
   <em>This is a .NET C# NATS template for the AsyncAPI generator</em>
 </p>
 
-
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](##Contributors-✨)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
@@ -27,10 +26,22 @@ The generated output shall be seen a separate library (similar to any REST API c
 
 Install the generator through [npm or run it from docker official installer](https://github.com/asyncapi/generator#install).
 
+
+## Template configuration
+
+<!--  
+This information should match the information provided in the template configuration under the `parameters` property.
+-->
+
+You can configure this template by passing different parameters in the Generator CLI: `-p PARAM1_NAME=PARAM1_VALUE -p PARAM2_NAME=PARAM2_VALUE`
+
+Name | Description | Required | Default | Allowed Values | Example
+---|---|---|---|---|---
+version | Version to use for the generated library. | No | `0.0.1` | string | `1.0.1`
+
 # Contributing
 
 Before contributing please read the [CONTRIBUTING](CONTRIBUTING.md) document.
-
 
 ## Contributors ✨
 

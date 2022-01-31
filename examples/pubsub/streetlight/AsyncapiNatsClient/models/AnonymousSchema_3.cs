@@ -1,8 +1,8 @@
-
-using System.Text.Json;
+namespace Asyncapi.Nats.Client.Models
+{
+  using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
-namespace Asyncapi.Nats.Client.Models {
   [JsonConverter(typeof(AnonymousSchema_3Converter))]
 public class AnonymousSchema_3 {
   private int? lumen;
@@ -86,4 +86,3 @@ internal class AnonymousSchema_3Converter : JsonConverter<AnonymousSchema_3>
 }
 
 }
-    
