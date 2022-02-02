@@ -16,12 +16,12 @@ public class AnonymousSchema_3 {
 
 internal class AnonymousSchema_3Converter : JsonConverter<AnonymousSchema_3>
 {
-  public override bool CanConvert(Type objectType)
+  public override bool CanConvert(System.Type objectType)
   {
     // this converter can be applied to any type
     return true;
   }
-  public override AnonymousSchema_3 Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+  public override AnonymousSchema_3 Read(ref Utf8JsonReader reader, System.Type typeToConvert, JsonSerializerOptions options)
   {
     if (reader.TokenType != JsonTokenType.StartObject)
     {
