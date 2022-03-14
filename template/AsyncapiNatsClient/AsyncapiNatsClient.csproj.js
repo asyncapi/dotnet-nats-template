@@ -9,9 +9,9 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
  */
 
 /**
- * 
- * @param {RenderArgument} param0 
- * @returns 
+ *
+ * @param {RenderArgument} param0
+ * @returns
  */
 export default function asyncapiNatsClient({ params }) {
   const version = `<Version>${params.version}</Version>`;
@@ -20,7 +20,7 @@ export default function asyncapiNatsClient({ params }) {
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>Asyncapi.Nats.Client</RootNamespace>
     ${version}
   </PropertyGroup>
