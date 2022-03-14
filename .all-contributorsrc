@@ -1,6 +1,6 @@
 {
   "projectName": "dotnet-nats-template",
-  "projectOwner": "@asyncapi",
+  "projectOwner": "asyncapi",
   "repoType": "github",
   "repoHost": "https://github.com",
   "files": [
@@ -31,8 +31,18 @@
       "contributions": [
         "review"
       ]
+    },
+    {
+      "login": "YoeriVD",
+      "name": "Yoeri Van Damme",
+      "avatar_url": "https://avatars.githubusercontent.com/u/2865793?v=4",
+      "profile": "https://github.com/YoeriVD",
+      "contributions": [
+        "code"
+      ]
     }
   ],
   "contributorsPerLine": 7,
-  "commitConvention": "none"
+  "commitConvention": "none",
+  "skipCi": true
 }
