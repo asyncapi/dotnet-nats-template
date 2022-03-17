@@ -9,11 +9,10 @@ import { CSharpGenerator, FormatHelpers, CSHARP_JSON_SERIALIZER_PRESET} from '@a
 
 /**
  * Render all schema models
- * @param {RenderArgument} param0 
- * @returns 
+ * @param {RenderArgument} param0
+ * @returns
  */
 export default async function modelRenderer({ asyncapi }) {
-  //const typescriptGenerator = new CSharpGenerator({presets: [{preset: CSHARP_COMMON_PRESET}]});
   const generator = new CSharpGenerator({presets: [CSHARP_JSON_SERIALIZER_PRESET]});
   const generatedModels = await generator.generateCompleteModels(asyncapi, {
     namespace: 'Asyncapi.Nats.Client.Models'

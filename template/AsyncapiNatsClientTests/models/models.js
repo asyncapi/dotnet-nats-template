@@ -9,12 +9,12 @@ import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
 
 /**
  * Render all schema models
- * @param {RenderArgument} param0 
- * @returns 
+ * @param {RenderArgument} param0
+ * @returns
  */
 export default async function modelTestRenderer({ asyncapi }) {
-  const typescriptGenerator = new CSharpGenerator();
-  const generatedModels = await typescriptGenerator.generate(asyncapi);
+  const generator = new CSharpGenerator();
+  const generatedModels = await generator.generate(asyncapi);
   const files = [];
   for (const generatedModel of generatedModels) {
     const className = FormatHelpers.toPascalCase(generatedModel.modelName);

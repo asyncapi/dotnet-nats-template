@@ -15,7 +15,7 @@ const contentTypeBinary = 'application/octet-stream';
 
 /**
  * Should the callbacks be promisify.
- * 
+ *
  * @param {TemplateParameters} params passed to the template
  * @returns {boolean} should it promisify callbacks
  */
@@ -36,9 +36,9 @@ export function kebabCase(string) {
 
 /**
  * Returns the schema file name
- * 
- * @param {string} schemaName 
- * @returns 
+ *
+ * @param {string} schemaName
+ * @returns
  */
 export function getSchemaFileName(schemaName) {
   return FormatHelpers.toPascalCase(schemaName);
@@ -46,7 +46,7 @@ export function getSchemaFileName(schemaName) {
 
 /**
  * Figure out if our message content type or default content type matches a given payload.
- * 
+ *
  * @param {string} messageContentType to check against payload
  * @param {string} defaultContentType to check against payload
  * @param {string} payload to check
@@ -73,9 +73,9 @@ export function isJsonPayload(messageContentType, defaultContentType) {
 
 /**
  * Checks if the message payload is of type null
- * 
+ *
  * @param {Schema} messagePayload to check
- * @returns {boolean} does the payload contain null type 
+ * @returns {boolean} does the payload contain null type
  */
 export function messageHasNotNullPayload(messagePayload) {
   return `${messagePayload.type()}` !== 'null';
@@ -83,7 +83,7 @@ export function messageHasNotNullPayload(messagePayload) {
 
 /**
  * Get message type ensure that the correct message type is returned.
- * 
+ *
  * @param {Message} message to find the message type for
  */
 export function getMessageType(message) {
@@ -94,9 +94,9 @@ export function getMessageType(message) {
 }
 
 /**
- * Convert JSON schema draft 7 types to typescript types 
- * @param {*} jsonSchemaType 
- * @param {*} property 
+ * Convert JSON schema draft 7 types to csharp types
+ * @param {*} jsonSchemaType
+ * @param {*} property
  */
 export function toCType(jsonSchemaType, property) {
   switch (jsonSchemaType.toLowerCase()) {
@@ -111,18 +111,18 @@ export function toCType(jsonSchemaType, property) {
   case 'object':
     if (property) {
       return `${property.uid()}Schema`;
-    } 
+    }
     return 'object';
-      
+
   default: return 'object';
   }
 }
 
 /**
  * Cast JSON schema variable to csharp type
- * 
- * @param {*} jsonSchemaType 
- * @param {*} variableToCast 
+ *
+ * @param {*} jsonSchemaType
+ * @param {*} variableToCast
  */
 export function castToCType(jsonSchemaType, variableToCast) {
   switch (jsonSchemaType.toLowerCase()) {
@@ -139,7 +139,7 @@ export function castToCType(jsonSchemaType, variableToCast) {
 }
 
 /**
- * Convert RFC 6570 URI with parameters to NATS topic. 
+ * Convert RFC 6570 URI with parameters to NATS topic.
  */
 export function realizeChannelName(parameters, channelName) {
   let returnString = `"${channelName}"`;
