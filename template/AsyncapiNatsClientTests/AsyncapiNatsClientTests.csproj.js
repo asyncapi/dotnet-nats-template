@@ -2,7 +2,7 @@ import { File } from '@asyncapi/generator-react-sdk';
 
 export default function asyncapiNatsClientTests({ params }) {
   const projectName = params.projectName;
-  return <File name={`${projectName}Test.csproj`}>
+  return <File name={`${projectName}Tests.csproj`}>
     {`
 <Project Sdk="Microsoft.NET.Sdk">
 
