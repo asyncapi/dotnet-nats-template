@@ -38,6 +38,7 @@ You can configure this template by passing different parameters in the Generator
 Name | Description | Required | Default | Allowed Values | Example
 ---|---|---|---|---|---
 version | Version to use for the generated library. | No | `0.0.1` | string | `1.0.1`
+projectName | Name of the generated library. | No | `AsyncapiNatsClient` | string | `MyCustomName`
 
 # Contributing
 

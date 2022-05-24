@@ -1,3 +1,9 @@
+import { File } from '@asyncapi/generator-react-sdk';
+
+export default function asyncapiNatsClientTests({ params }) {
+  const projectName = params.projectName;
+  return <File name={`${projectName}Test.csproj`}>
+    {`
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -14,7 +20,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AsyncapiNatsClient\AsyncapiNatsClient.csproj" />
+    <ProjectReference Include="..\\${projectName}\\${projectName}.csproj" />
   </ItemGroup>
 
 </Project>
+`
+    }
+  </File>;
+}
