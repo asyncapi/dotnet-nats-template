@@ -38,6 +38,8 @@ You can configure this template by passing different parameters in the Generator
 Name | Description | Required | Default | Allowed Values | Example
 ---|---|---|---|---|---
 version | Version to use for the generated library. | No | `0.0.1` | string | `1.0.1`
+repositoryUrl | Repository url for the project file, often needed for release pipelines. | No | None | string | `https://github.com/GamingAPI/rust-csharp-game-api.git`
+
 
 # Contributing
 
