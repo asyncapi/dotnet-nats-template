@@ -8,11 +8,14 @@ const path = require('path');
 module.exports = {
   'generate:after': (generator) => {
     const { projectName } = generator.templateParams;
-    const currentPathToProject = path.resolve(generator.targetDir, 'AsyncapiNatsClient');
-    const newPathToProject = path.resolve(generator.targetDir, projectName);
-    fs.renameSync(currentPathToProject, newPathToProject);
-    const currentPathToTestProject = path.resolve(generator.targetDir, 'AsyncapiNatsClientTests');
-    const newPathToTestProject = path.resolve(generator.targetDir, `${projectName}Test`);
-    fs.renameSync(currentPathToTestProject, newPathToTestProject);
+    const defaultProjectName = 'AsyncapiNatsClient';
+    if (projectName !== defaultProjectName) {
+      const currentPathToProject = path.resolve(generator.targetDir, 'AsyncapiNatsClient');
+      const newPathToProject = path.resolve(generator.targetDir, projectName);
+      fs.renameSync(currentPathToProject, newPathToProject);
+      const currentPathToTestProject = path.resolve(generator.targetDir, 'AsyncapiNatsClientTests');
+      const newPathToTestProject = path.resolve(generator.targetDir, `${projectName}Test`);
+      fs.renameSync(currentPathToTestProject, newPathToTestProject);
+    }
   }
 };
