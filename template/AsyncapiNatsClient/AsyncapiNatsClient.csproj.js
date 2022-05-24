@@ -15,7 +15,7 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
  */
 export default function asyncapiNatsClient({ params }) {
   const version = `<Version>${params.version}</Version>`;
-  let repositoryUrl; 
+  let repositoryUrl = ''; 
   if (params.repositoryUrl) {
     repositoryUrl = `<RepositoryUrl>${params.repositoryUrl}</RepositoryUrl>`;
   }
@@ -27,7 +27,7 @@ export default function asyncapiNatsClient({ params }) {
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>Asyncapi.Nats.Client</RootNamespace>
     ${version}
-    ${repositoryUrl & repositoryUrl}
+    ${repositoryUrl}
   </PropertyGroup>
 
   <ItemGroup>
