@@ -89,6 +89,10 @@
       "version": {
         "default": "0.0.1",
         "description": "Version of the generated library"
+      },
+      "targetFramework": {
+        "default": "netstandard2.0;netstandard2.1",
+        "description": "The project target framework"
       }
     },
     "generator": ">=1.1.1 <2.0.0"
