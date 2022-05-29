@@ -14,7 +14,7 @@ module.exports = {
       const newPathToProject = path.resolve(generator.targetDir, projectName);
       fs.renameSync(currentPathToProject, newPathToProject);
       const currentPathToTestProject = path.resolve(generator.targetDir, 'AsyncapiNatsClientTests');
-      const newPathToTestProject = path.resolve(generator.targetDir, `${projectName}Test`);
+      const newPathToTestProject = path.resolve(generator.targetDir, `${projectName}Tests`);
       fs.renameSync(currentPathToTestProject, newPathToTestProject);
     }
   }
