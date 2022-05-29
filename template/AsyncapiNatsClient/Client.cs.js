@@ -8,12 +8,12 @@ import publish from '../../components/client/publish';
 function getDelegates(channels) {
   const delegates = [];
   for (const [channelName, channel] of channels) {
-    if (channel.hasPublish()) continue;
+    if (channel.hasSubscribe()) continue;
     const channelParameterEntries = Object.entries(channel.parameters());
-    const channelPublishMessage = channel.subscribe().message(0);
+    const channelSubscribeMessage = channel.publish().message(0);
     const delegateParameters = [];
-    if (messageHasNotNullPayload(channelPublishMessage.payload())) {
-      const messageType = getMessageType(channelPublishMessage);
+    if (messageHasNotNullPayload(channelSubscribeMessage.payload())) {
+      const messageType = getMessageType(channelSubscribeMessage);
       delegateParameters.push(`${messageType} request`);
     }
     if (channelParameterEntries.length > 0) {
@@ -29,11 +29,11 @@ function getChannelWrappers(channels) {
   const channelWrappers = [];
   for (const [channelName, channel] of channels) {
     const channelParameterEntries = Object.entries(channel.parameters());
-    if (channel.hasSubscribe()) {
+    if (channel.hasPublish()) {
       channelWrappers.push(subscribe(channelName, channelParameterEntries));
     }
-    if (channel.hasPublish()) {
-      channelWrappers.push(publish(channelName, channel.publish().message(0), channelParameterEntries));
+    if (channel.hasSubscribe()) {
+      channelWrappers.push(publish(channelName, channel.subscribe().message(0), channelParameterEntries));
     }
   }
   return channelWrappers;
