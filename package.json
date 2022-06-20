@@ -91,16 +91,13 @@
         "description": "Version of the generated library"
       },
       "packageVersion": {
-        "default": "0.0.1",
-        "description": "Version of the generated library"
+        "description": "PackageVersion of the generated library"
       },
       "assemblyVersion": {
-        "default": "0.0.1.0",
-        "description": "Version of the generated library"
+        "description": "AssemblyVersion of the generated library"
       },
       "fileVersion": {
-        "default": "0.0.1.0",
-        "description": "Version of the generated library"
+        "description": "FileVersion of the generated library"
       }
     },
     "generator": ">=1.1.1 <2.0.0"
