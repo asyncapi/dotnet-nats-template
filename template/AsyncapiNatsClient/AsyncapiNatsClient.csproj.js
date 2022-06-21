@@ -32,6 +32,7 @@ export default function asyncapiNatsClient({ params }) {
   <ItemGroup>
     <PackageReference Include="NATS.Client" Version="0.12.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 </Project>`
     }
