@@ -9,23 +9,41 @@ namespace Asyncapi.Nats.Client.Channels
   class StreetlightStreetlightIdCommandTurnon
   {
 
-
-internal static byte[] JsonSerializerSupport(LoggingInterface logger, AnonymousSchema_1 obj)
+  internal static AnonymousSchema_1 JsonDeserializerSupport(LoggingInterface logger, byte[] buffer)
 {
-  var json = JsonSerializer.Serialize(obj);
-  logger.Debug("Serialized message " + json);
-  return Encoding.UTF8.GetBytes(json);
+  var srt = Encoding.UTF8.GetString(buffer);
+  logger.Debug("Deserializing message " + srt);
+  return JsonSerializer.Deserialize<AnonymousSchema_1>(srt);
 }
-
-public static void Publish(
-  LoggingInterface logger,
+  public static IAsyncSubscription Subscribe(
+    LoggingInterface logger,
 IEncodedConnection connection,
-AnonymousSchema_1 requestMessage,
+StreetlightStreetlightIdCommandTurnonOnRequest onRequest,
 String streetlight_id
-){
-  logger.Debug("Publishing to channel: " + $"streetlight.{streetlight_id}.command.turnon");
-  var serializedObject = JsonSerializerSupport(logger, requestMessage); 
-  connection.Publish("streetlight.{streetlight_id}.command.turnon", serializedObject);
-}
+  )
+  {
+    EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
+    {
+      logger.Debug("Got message for channel subscription: " + $"streetlight.{streetlight_id}.command.turnon");
+      var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);
+
+      var unmodifiedChannel = "streetlight.{streetlight_id}.command.turnon";
+  var channel = args.Subject;
+  var streetlightIdSplit = unmodifiedChannel.Split(new string[] { "{streetlight_id}" }, StringSplitOptions.None);
+  String[] splits = {
+    streetlightIdSplit[0],
+streetlightIdSplit[1]
+  };
+  channel = channel.Substring(splits[0].Length);
+var streetlightIdEnd = channel.IndexOf(splits[1]);
+var streetlightIdParam = $"{channel.Substring(0, streetlightIdEnd)}";
+      
+      onRequest(deserializedMessage,
+streetlightIdParam);
+    };
+    logger.Debug("Subscribing to: " + $"streetlight.{streetlight_id}.command.turnon");
+    return connection.SubscribeAsync($"streetlight.{streetlight_id}.command.turnon",handler);
+  }
+
   }
 }
