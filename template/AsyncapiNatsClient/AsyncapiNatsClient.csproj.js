@@ -15,6 +15,18 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
  */
 export default function asyncapiNatsClient({ params }) {
   const version = `<Version>${params.version}</Version>`;
+  let packageVersion = '';
+  if (params.packageVersion !== undefined) {
+    packageVersion = `<PackageVersion>${params.packageVersion}</PackageVersion>`;
+  }
+  let assemblyVersion = '';
+  if (params.assemblyVersion !== undefined) {
+    assemblyVersion = `<AssemblyVersion>${params.assemblyVersion}</AssemblyVersion>`;
+  }
+  let fileVersion = '';
+  if (params.fileVersion !== undefined) {
+    fileVersion = `<FileVersion>${params.fileVersion}</FileVersion>`;
+  }
   return <File name={'AsyncapiNatsClient.csproj'}>
     {`
 <Project Sdk="Microsoft.NET.Sdk">
@@ -23,6 +35,9 @@ export default function asyncapiNatsClient({ params }) {
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>Asyncapi.Nats.Client</RootNamespace>
     ${version}
+    ${packageVersion}
+    ${assemblyVersion}
+    ${fileVersion}
   </PropertyGroup>
 
   <ItemGroup>
