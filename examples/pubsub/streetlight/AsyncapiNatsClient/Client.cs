@@ -9,8 +9,8 @@ using NATS.Client;
 namespace Asyncapi.Nats.Client
 {
 
-  public delegate void StreetlightStreetlightIdEventTurnonOnRequest(
-      AnonymousSchema_3 request,
+  public delegate void StreetlightStreetlightIdCommandTurnonOnRequest(
+      AnonymousSchema_1 request,
 String streetlight_id
     );
 
@@ -108,16 +108,15 @@ String streetlight_id
     {
         this.Logger = logger;
     }
-    public void PublishToStreetlightStreetlightIdCommandTurnon(
-  AnonymousSchema_1 requestMessage,
+    public IAsyncSubscription SubscribeToStreetlightStreetlightIdCommandTurnon(
+  StreetlightStreetlightIdCommandTurnonOnRequest onRequest,
 String streetlight_id
-)
-  {
+){
   if (IsConnected())
   {
-    StreetlightStreetlightIdCommandTurnon.Publish(logger,
+    return StreetlightStreetlightIdCommandTurnon.Subscribe(logger,
 connection,
-requestMessage,
+onRequest,
 streetlight_id);
   }
   else
@@ -125,15 +124,16 @@ streetlight_id);
     throw new ClientNotConnected();
   }
 }
-public IAsyncSubscription SubscribeToStreetlightStreetlightIdEventTurnon(
-  StreetlightStreetlightIdEventTurnonOnRequest onRequest,
+public void PublishToStreetlightStreetlightIdEventTurnon(
+  AnonymousSchema_3 requestMessage,
 String streetlight_id
-){
+)
+  {
   if (IsConnected())
   {
-    return StreetlightStreetlightIdEventTurnon.Subscribe(logger,
+    StreetlightStreetlightIdEventTurnon.Publish(logger,
 connection,
-onRequest,
+requestMessage,
 streetlight_id);
   }
   else
