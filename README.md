@@ -38,6 +38,7 @@ You can configure this template by passing different parameters in the Generator
 Name | Description | Required | Default | Allowed Values | Example
 ---|---|---|---|---|---
 version | Version to use for the generated library. | No | `0.0.1` | string | `1.0.1`
+targetFramework | Set the project target frameworks. Separate multiple by `;`. | No | `netstandard2.0;netstandard2.1` | string | `net461`
 packageVersion | PackageVersion to use for the generated library. | No | None | string | `1.0.1`
 assemblyVersion | AssemblyVersion to use for the generated library. | No | None | string | `1.0.1.0`
 fileVersion | FileVersion to use for the generated library. | No | None | string | `1.0.1.0`
