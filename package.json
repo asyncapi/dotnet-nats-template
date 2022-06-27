@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.5.2",
+  "version": "0.6.0",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
@@ -93,6 +93,13 @@
       "projectName": {
         "default": "AsyncapiNatsClient",
         "description": "Name of the generated library"
+      },
+      "repositoryUrl": {
+        "description": "Repository url for the project file, often needed for release pipelines"
+      },
+      "targetFramework": {
+        "default": "netstandard2.0;netstandard2.1",
+        "description": "The project target framework"
       },
       "packageVersion": {
         "description": "PackageVersion of the generated library"
