@@ -1,20 +1,8 @@
 import { File } from '@asyncapi/generator-react-sdk';
-// eslint-disable-next-line no-unused-vars
-import { AsyncAPIDocument } from '@asyncapi/parser';
 
-/**
- * @typedef RenderArgument
- * @type {object}
- * @property {AsyncAPIDocument} asyncapi received from the generator.
- */
-
-/**
- *
- * @param {RenderArgument} param0
- * @returns
- */
 export default function asyncapiNatsClient({ params }) {
   const version = `<Version>${params.version}</Version>`;
+  const projectName = params.projectName;
   const targetFramework = `<TargetFrameworks>${params.targetFramework}</TargetFrameworks>`;
   let repositoryUrl = ''; 
   if (params.repositoryUrl) {
@@ -32,7 +20,7 @@ export default function asyncapiNatsClient({ params }) {
   if (params.fileVersion !== undefined) {
     fileVersion = `<FileVersion>${params.fileVersion}</FileVersion>`;
   }
-  return <File name={'AsyncapiNatsClient.csproj'}>
+  return <File name={`${projectName}.csproj`}>
     {`
 <Project Sdk="Microsoft.NET.Sdk">
 

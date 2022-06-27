@@ -90,6 +90,10 @@
         "default": "0.0.1",
         "description": "Version of the generated library"
       },
+      "projectName": {
+        "default": "AsyncapiNatsClient",
+        "description": "Name of the generated library"
+      },
       "repositoryUrl": {
         "description": "Repository url for the project file, often needed for release pipelines"
       },
