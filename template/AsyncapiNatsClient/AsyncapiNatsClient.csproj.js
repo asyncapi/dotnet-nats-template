@@ -3,6 +3,18 @@ import { File } from '@asyncapi/generator-react-sdk';
 export default function asyncapiNatsClient({ params }) {
   const version = `<Version>${params.version}</Version>`;
   const projectName = params.projectName;
+  let packageVersion = '';
+  if (params.packageVersion !== undefined) {
+    packageVersion = `<PackageVersion>${params.packageVersion}</PackageVersion>`;
+  }
+  let assemblyVersion = '';
+  if (params.assemblyVersion !== undefined) {
+    assemblyVersion = `<AssemblyVersion>${params.assemblyVersion}</AssemblyVersion>`;
+  }
+  let fileVersion = '';
+  if (params.fileVersion !== undefined) {
+    fileVersion = `<FileVersion>${params.fileVersion}</FileVersion>`;
+  }
   return <File name={`${projectName}.csproj`}>
     {`
 <Project Sdk="Microsoft.NET.Sdk">
@@ -11,6 +23,9 @@ export default function asyncapiNatsClient({ params }) {
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
     <RootNamespace>Asyncapi.Nats.Client</RootNamespace>
     ${version}
+    ${packageVersion}
+    ${assemblyVersion}
+    ${fileVersion}
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,6 +35,7 @@ export default function asyncapiNatsClient({ params }) {
   <ItemGroup>
     <PackageReference Include="NATS.Client" Version="0.12.0" />
     <PackageReference Include="System.Text.Json" Version="5.0.2" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 </Project>`
     }

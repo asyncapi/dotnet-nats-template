@@ -39,6 +39,9 @@ Name | Description | Required | Default | Allowed Values | Example
 ---|---|---|---|---|---
 version | Version to use for the generated library. | No | `0.0.1` | string | `1.0.1`
 projectName | Name of the generated library. | No | `AsyncapiNatsClient` | string | `MyCustomName`
+packageVersion | PackageVersion to use for the generated library. | No | None | string | `1.0.1`
+assemblyVersion | AssemblyVersion to use for the generated library. | No | None | string | `1.0.1.0`
+fileVersion | FileVersion to use for the generated library. | No | None | string | `1.0.1.0`
 
 # Contributing
 

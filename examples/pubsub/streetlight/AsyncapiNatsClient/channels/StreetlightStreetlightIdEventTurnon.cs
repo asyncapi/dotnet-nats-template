@@ -9,41 +9,23 @@ namespace Asyncapi.Nats.Client.Channels
   class StreetlightStreetlightIdEventTurnon
   {
 
-  internal static AnonymousSchema_3 JsonDeserializerSupport(LoggingInterface logger, byte[] buffer)
+
+internal static byte[] JsonSerializerSupport(LoggingInterface logger, AnonymousSchema_3 obj)
 {
-  var srt = Encoding.UTF8.GetString(buffer);
-  logger.Debug("Deserializing message " + srt);
-  return JsonSerializer.Deserialize<AnonymousSchema_3>(srt);
+  var json = JsonSerializer.Serialize(obj);
+  logger.Debug("Serialized message " + json);
+  return Encoding.UTF8.GetBytes(json);
 }
-  public static IAsyncSubscription Subscribe(
-    LoggingInterface logger,
+
+public static void Publish(
+  LoggingInterface logger,
 IEncodedConnection connection,
-StreetlightStreetlightIdEventTurnonOnRequest onRequest,
+AnonymousSchema_3 requestMessage,
 String streetlight_id
-  )
-  {
-    EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
-    {
-      logger.Debug("Got message for channel subscription: " + $"streetlight.{streetlight_id}.event.turnon");
-      var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);
-
-      var unmodifiedChannel = "streetlight.{streetlight_id}.event.turnon";
-  var channel = args.Subject;
-  var streetlightIdSplit = unmodifiedChannel.Split(new string[] { "{streetlight_id}" }, StringSplitOptions.None);
-  String[] splits = {
-    streetlightIdSplit[0],
-streetlightIdSplit[1]
-  };
-  channel = channel.Substring(splits[0].Length);
-var streetlightIdEnd = channel.IndexOf(splits[1]);
-var streetlightIdParam = $"{channel.Substring(0, streetlightIdEnd)}";
-      
-      onRequest(deserializedMessage,
-streetlightIdParam);
-    };
-    logger.Debug("Subscribing to: " + $"streetlight.{streetlight_id}.event.turnon");
-    return connection.SubscribeAsync($"streetlight.{streetlight_id}.event.turnon",handler);
-  }
-
+){
+  logger.Debug("Publishing to channel: " + $"streetlight.{streetlight_id}.event.turnon");
+  var serializedObject = JsonSerializerSupport(logger, requestMessage); 
+  connection.Publish("streetlight.{streetlight_id}.event.turnon", serializedObject);
+}
   }
 }
