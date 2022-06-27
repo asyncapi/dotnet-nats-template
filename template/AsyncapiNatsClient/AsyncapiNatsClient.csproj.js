@@ -16,6 +16,10 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
 export default function asyncapiNatsClient({ params }) {
   const version = `<Version>${params.version}</Version>`;
   const targetFramework = `<TargetFrameworks>${params.targetFramework}</TargetFrameworks>`;
+  let repositoryUrl = ''; 
+  if (params.repositoryUrl) {
+    repositoryUrl = `<RepositoryUrl>${params.repositoryUrl}</RepositoryUrl>`;
+  }
   let packageVersion = '';
   if (params.packageVersion !== undefined) {
     packageVersion = `<PackageVersion>${params.packageVersion}</PackageVersion>`;
@@ -36,6 +40,7 @@ export default function asyncapiNatsClient({ params }) {
     ${targetFramework}
     <RootNamespace>Asyncapi.Nats.Client</RootNamespace>
     ${version}
+    ${repositoryUrl}
     ${packageVersion}
     ${assemblyVersion}
     ${fileVersion}
