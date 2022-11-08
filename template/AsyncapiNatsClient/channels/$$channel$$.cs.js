@@ -17,14 +17,15 @@ import subscribe from '../../../components/channel/subscribe';
  * @param {RenderArgument} param0 
  * @returns 
  */
-export default function clientFile({ channelName, channel }) {
+export default function clientFile({ channelName, channel, params }) {
   const channelParameterEntries = Object.entries(channel.parameters());
+  const serializationLibrary = params.serializationLibrary === 'json' ? 'using System.Text.Json;' : 'using Newtonsoft.Json;';
   return <File name={`${pascalCase(channelName)}.cs`}>
     {
       `using NATS.Client;
 using System;
 using System.Text;
-using System.Text.Json;
+${serializationLibrary}
 using Asyncapi.Nats.Client.Models;
 
 namespace Asyncapi.Nats.Client.Channels

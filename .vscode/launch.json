@@ -8,11 +8,28 @@
           "timeout": 10000,
           "sourceMaps": true,
           "args": [
-            "./examples/pubsub/streetlight.json",
+            "./examples/streetlight.json",
             "./",
             "--output",
             "./examples/pubsub/streetlight",
             "--force-write"
+          ],
+          "program": "./node_modules/@asyncapi/generator/cli.js"
+        },
+        {
+          "type": "node",
+          "request": "launch",
+          "name": "Debug newtonsoft example generation",
+          "timeout": 10000,
+          "sourceMaps": true,
+          "args": [
+            "./examples/streetlight.json",
+            "./",
+            "--output",
+            "./examples/newtonsoft/streetlight",
+            "--force-write",
+            "--param",
+            "serializationLibrary=newtonsoft"
           ],
           "program": "./node_modules/@asyncapi/generator/cli.js"
         }

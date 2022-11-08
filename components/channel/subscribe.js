@@ -33,7 +33,7 @@ function getSubscribeParameters(realizedChannelPath, queue) {
  * @param {*} channelName 
  * @param {*} channelParameters 
  * @param {*} subscriptionMessage 
- * @param {*} queue 
+ * @param {*} queue
  */
 export default function subscribe(channelName, channelParameters, subscriptionMessage, queue = undefined) {
   const functionParameters = getFunctionParameters(channelParameters, channelName);
@@ -42,7 +42,7 @@ export default function subscribe(channelName, channelParameters, subscriptionMe
   const subscribeParameters = getSubscribeParameters(realizedChannelPath, queue);
 
   return `
-  ${deserializer(subscriptionMessage)}
+  ${deserializer(subscriptionMessage, channelParameters)}
   public static IAsyncSubscription Subscribe(
     ${functionParameters.join(',\n')}
   )

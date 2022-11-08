@@ -47,15 +47,11 @@ namespace Asyncapi.Nats.Client.Models
 
         string propertyName = reader.GetString();
         if (propertyName == "lumen")
-        {
-          var value = JsonSerializer.Deserialize<int?>(ref reader, options);
-          instance.Lumen = value;
-          continue;
-        }
-
-    
-
-    
+          {
+            var value = JsonSerializer.Deserialize<int>(ref reader, options);
+            instance.lumen = value;
+            continue;
+          }
       }
   
       throw new JsonException();
@@ -71,16 +67,12 @@ namespace Asyncapi.Nats.Client.Models
   
       writer.WriteStartObject();
 
-      if(value.Lumen != null) { 
+      if(value.lumen != null) { 
         // write property name and let the serializer serialize the value itself
         writer.WritePropertyName("lumen");
-        JsonSerializer.Serialize(writer, value.Lumen, options);
+        JsonSerializer.Serialize(writer, value.lumen, options);
       }
 
-
-  
-
-  
 
       writer.WriteEndObject();
     }
