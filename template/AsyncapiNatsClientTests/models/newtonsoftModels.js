@@ -4,7 +4,7 @@ import { CSharpGenerator } from '@asyncapi/modelina';
 /**
  * @typedef RenderArgument
  * @type {object}
- * @property {AsyncAPIDocument} asyncapi received from the generator.
+ * @property {any} originalAsyncAPI received from the generator.
  */
 
 /**
@@ -12,11 +12,15 @@ import { CSharpGenerator } from '@asyncapi/modelina';
  * @param {RenderArgument} param0
  * @returns
  */
+
 export default async function modelTestRenderer({ originalAsyncAPI, params }) {
   if (params.serializationLibrary !== 'newtonsoft') return;
   const generator = new CSharpGenerator();
-  const generatedModels = await generator.generate(JSON.parse(originalAsyncAPI));
+  const generatedModels = await generator.generate(
+    JSON.parse(originalAsyncAPI)
+  );
   const files = [];
+
   for (const generatedModel of generatedModels) {
     const className = generatedModel.modelName;
     const modelFileName = `${className}Test.cs`;
@@ -45,4 +49,3 @@ namespace Asyncapi.Nats.Client.Tests
   }
   return files;
 }
-
