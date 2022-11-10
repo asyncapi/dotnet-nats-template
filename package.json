@@ -23,7 +23,7 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "echo \"No tests specified yet\"",
-    "lint": "./node_modules/.bin/eslint --max-warnings 0 --config .eslintrc .",
+    "lint": "eslint --max-warnings 0 --config .eslintrc ./",
     "lint:fix": "npm run lint -- --fix",
     "generate:assets": "npm run generate:examples",
     "generate:examples": "npm run generate:examples:pubsub",
@@ -38,8 +38,7 @@
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.23",
     "@asyncapi/modelina": "^1.0.0-next.24",
-    "@asyncapi/parserV2": "npm:@asyncapi/parser@v2.0.0-next-major.7",
-    "@babel/core": "^7.15.0"
+    "@asyncapi/parserV2": "npm:@asyncapi/parser@v2.0.0-next-major.7"
   },
   "publishConfig": {
     "access": "public"

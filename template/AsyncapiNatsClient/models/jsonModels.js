@@ -1,5 +1,5 @@
 import { File } from '@asyncapi/generator-react-sdk';
-import { CSharpGenerator, FormatHelpers, CSHARP_JSON_SERIALIZER_PRESET} from '@asyncapi/modelina';
+import { CSharpGenerator, CSHARP_JSON_SERIALIZER_PRESET} from '@asyncapi/modelina';
 
 /**
  * @typedef RenderArgument
@@ -21,8 +21,7 @@ export default async function modelRenderer({ originalAsyncAPI, params }) {
   });
   const files = [];
   for (const generatedModel of generatedModels) {
-    const className = FormatHelpers.toPascalCase(generatedModel.modelName);
-    const modelFileName = `${className}.cs`;
+    const modelFileName = `${generatedModel.modelName}.cs`;
     files.push(<File name={modelFileName}>{generatedModel.result}</File>);
   }
   return files;

@@ -1,5 +1,5 @@
 import { File } from '@asyncapi/generator-react-sdk';
-import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
+import { CSharpGenerator } from '@asyncapi/modelina';
 
 /**
  * @typedef RenderArgument
@@ -18,7 +18,7 @@ export default async function modelTestRenderer({ originalAsyncAPI, params }) {
   const generatedModels = await generator.generate(JSON.parse(originalAsyncAPI));
   const files = [];
   for (const generatedModel of generatedModels) {
-    const className = FormatHelpers.toPascalCase(generatedModel.modelName);
+    const className = generatedModel.modelName;
     const modelFileName = `${className}Test.cs`;
     const fileContent = `
 using System.Text.Json;
