@@ -1,8 +1,7 @@
 import { getMessageType, messageHasNotNullPayload, realizeChannelName, realizeParametersForChannel } from '../../utils/general';
-import {serializer} from './ChannelSerializer';
 
 function getFunctionParameters(publishMessage, channelParameters) {
-  const functionParameters = ['LoggingInterface logger', 'IEncodedConnection connection'];
+  const functionParameters = ['LoggingInterface logger', 'IConnection connection'];
   if (messageHasNotNullPayload(publishMessage.payload())) {
     const messageType = getMessageType(publishMessage);
     functionParameters.push(`${messageType} requestMessage`);
@@ -32,10 +31,7 @@ export default function publish(channelName, channelParameters, publishMessage) 
   const functionParameters = getFunctionParameters(publishMessage, channelParameters);
   const realizedChannelPath = realizeChannelName(channelParameters, channelName);
   const publishCode = getPublishCode(publishMessage, realizedChannelPath);
-  return `
-${serializer(publishMessage)}
-
-public static void Publish(
+  return `public static void Publish(
   ${functionParameters.join(',\n')}
 ){
   logger.Debug("Publishing to channel: " + $${realizedChannelPath});

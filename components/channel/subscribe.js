@@ -3,7 +3,7 @@ import { deserializer } from './ChannelDeserializer';
 import {channelParameterUnwrap} from './ChannelParameterUnwrap';
 
 function getFunctionParameters(channelParameters, channelName) {
-  const functionParameters = ['LoggingInterface logger', 'IEncodedConnection connection', `${pascalCase(channelName)}OnRequest onRequest`];
+  const functionParameters = ['LoggingInterface logger', 'IConnection connection', `${pascalCase(channelName)}OnRequest onRequest`];
   if (channelParameters.length > 0) {
     functionParameters.push(realizeParametersForChannel(channelParameters));
   }
@@ -47,10 +47,10 @@ export default function subscribe(channelName, channelParameters, subscriptionMe
     ${functionParameters.join(',\n')}
   )
   {
-    EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
+    EventHandler<MsgHandlerEventArgs> handler = (sender, args) =>
     {
       logger.Debug("Got message for channel subscription: " + $${realizedChannelPath});
-      ${messageHasNotNullPayload(subscriptionMessage.payload()) ? 'var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);' : ''}
+      ${messageHasNotNullPayload(subscriptionMessage.payload()) ? 'var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.Message.Data);' : ''}
 
       ${channelParameterUnwrap(channelName, channelParameters)}
       

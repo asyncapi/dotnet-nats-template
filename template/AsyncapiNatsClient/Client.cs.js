@@ -5,6 +5,7 @@ import { AsyncAPIDocument } from '@asyncapi/parser';
 import { getMessageType, messageHasNotNullPayload, pascalCase, realizeParametersForChannel } from '../../utils/general';
 import subscribe from '../../components/client/subscribe';
 import publish from '../../components/client/publish';
+import jetStreamPublish from '../../components/client/jetStreamPublish';
 function getDelegates(channels) {
   const delegates = [];
   for (const [channelName, channel] of channels) {
@@ -34,6 +35,7 @@ function getChannelWrappers(channels) {
     }
     if (channel.hasSubscribe()) {
       channelWrappers.push(publish(channelName, channel.subscribe().message(0), channelParameterEntries));
+      channelWrappers.push(jetStreamPublish(channelName, channel.subscribe().message(0), channelParameterEntries));
     }
   }
   return channelWrappers;
@@ -64,6 +66,7 @@ using System.Threading.Tasks;
 using Asyncapi.Nats.Client.Channels;
 using Asyncapi.Nats.Client.Models;
 using NATS.Client;
+using NATS.Client.JetStream;
 namespace Asyncapi.Nats.Client
 {
 

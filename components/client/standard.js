@@ -14,7 +14,8 @@ export default function standard() {
 		{
 		}
 	}
-	private IEncodedConnection connection;
+	private IConnection connection;
+	private IJetStream jetstream;
 	private LoggingInterface logger;
 	public LoggingInterface Logger
 	{
@@ -27,50 +28,29 @@ export default function standard() {
 		{
 			logger = value;
 		}
-	}	
-
-	internal byte[] JsonSerializer(object obj)
-	{
-		if (obj == null)
-		{
-			return null;
-		}
-		return (byte[])obj;
-	}
-
-
-
-	internal object JsonDeserializer(byte[] buffer)
-	{
-		return buffer;
 	}
 
 	public void Connect()
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection();
-		setserializers();
-	}
-
-	private void setserializers()
-	{
-		connection.OnDeserialize = JsonDeserializer;
-		connection.OnSerialize = JsonSerializer;
+		connection = new ConnectionFactory().CreateConnection();
 	}
 
 	public void Connect(string url)
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection(url);
-		setserializers();
+		connection = new ConnectionFactory().CreateConnection(url);
 	}
 	
 	public void Connect(Options opts)
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection(opts);
-		setserializers();
+		connection = new ConnectionFactory().CreateConnection(opts);
 	}
 	public Boolean IsConnected()
 	{
 		return connection != null && !connection.IsClosed();
+	}
+	public void createJetStreamContext(JetStreamOptions options)
+	{
+		jetstream = connection.CreateJetStreamContext(options);
 	}
 	
 	public void Close()
@@ -80,6 +60,5 @@ export default function standard() {
 			connection.Close();
 		}
 	}
-
 `;
 }

@@ -65,7 +65,7 @@ export function channelParameterUnwrap(channelName, channelParameters) {
   const parameterVariables = getParameterVariables(channelParameters);
 
   return `var unmodifiedChannel = ${realizeChannelNameWithoutParameters(channelName)};
-  var channel = args.Subject;
+  var channel = args.Message.Subject;
   ${parameterSplitVariables.join('\n')}
   String[] splits = {
     ${parameterSplits.join(',\n')}

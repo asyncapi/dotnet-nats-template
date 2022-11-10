@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Asyncapi.Nats.Client.Channels;
 using Asyncapi.Nats.Client.Models;
 using NATS.Client;
+using NATS.Client.JetStream;
 namespace Asyncapi.Nats.Client
 {
 
@@ -31,7 +32,8 @@ String streetlight_id
 		{
 		}
 	}
-	private IEncodedConnection connection;
+	private IConnection connection;
+	private IJetStream jetstream;
 	private LoggingInterface logger;
 	public LoggingInterface Logger
 	{
@@ -44,50 +46,29 @@ String streetlight_id
 		{
 			logger = value;
 		}
-	}	
-
-	internal byte[] JsonSerializer(object obj)
-	{
-		if (obj == null)
-		{
-			return null;
-		}
-		return (byte[])obj;
-	}
-
-
-
-	internal object JsonDeserializer(byte[] buffer)
-	{
-		return buffer;
 	}
 
 	public void Connect()
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection();
-		setserializers();
-	}
-
-	private void setserializers()
-	{
-		connection.OnDeserialize = JsonDeserializer;
-		connection.OnSerialize = JsonSerializer;
+		connection = new ConnectionFactory().CreateConnection();
 	}
 
 	public void Connect(string url)
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection(url);
-		setserializers();
+		connection = new ConnectionFactory().CreateConnection(url);
 	}
 	
 	public void Connect(Options opts)
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection(opts);
-		setserializers();
+		connection = new ConnectionFactory().CreateConnection(opts);
 	}
 	public Boolean IsConnected()
 	{
 		return connection != null && !connection.IsClosed();
+	}
+	public void createJetStreamContext(JetStreamOptions options)
+	{
+		jetstream = connection.CreateJetStreamContext(options);
 	}
 	
 	public void Close()
@@ -97,7 +78,6 @@ String streetlight_id
 			connection.Close();
 		}
 	}
-
 
     
     public NatsClient()
@@ -133,6 +113,23 @@ String streetlight_id
   {
     StreetlightStreetlightIdEventTurnon.Publish(logger,
 connection,
+requestMessage,
+streetlight_id);
+  }
+  else
+  {
+    throw new ClientNotConnected();
+  }
+}
+public void JetStreamPublishToStreetlightStreetlightIdEventTurnon(
+  AnonymousSchema_3 requestMessage,
+String streetlight_id
+)
+{
+  if (IsConnected())
+  {
+    StreetlightStreetlightIdEventTurnon.JetStreamPublish(logger,
+jetstream,
 requestMessage,
 streetlight_id);
   }
