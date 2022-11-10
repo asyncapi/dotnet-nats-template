@@ -1,0 +1,22 @@
+
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <RootNamespace>Asyncapi.Nats.Client</RootNamespace>
+    <Version>0.0.1</Version>
+    
+    
+    
+    
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="NATS.Client" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="NATS.Client" Version="1.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+  </ItemGroup>
+</Project>

@@ -5,14 +5,14 @@ using Xunit;
 
 namespace Asyncapi.Nats.Client.Tests
 {
-    public class Test
+    public class AnonymousSchema_3Test
     {
         [Fact]
         public void ShouldSerializeAndDeserializeAccurately()
         {
-             temp = new ();
+            AnonymousSchema_3 temp = new AnonymousSchema_3();
             string json1 = JsonSerializer.Serialize(temp);
-             output = JsonSerializer.Deserialize<>(json1);
+            AnonymousSchema_3 output = JsonSerializer.Deserialize<AnonymousSchema_3>(json1);
             string json2 = JsonSerializer.Serialize(output);
             Assert.Equal(json1, json2);
         }
