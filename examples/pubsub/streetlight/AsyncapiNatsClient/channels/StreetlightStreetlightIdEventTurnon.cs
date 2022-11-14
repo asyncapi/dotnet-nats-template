@@ -12,7 +12,7 @@ namespace Asyncapi.Nats.Client.Channels
 
 internal static byte[] JsonSerializerSupport(LoggingInterface logger, AnonymousSchema_3 obj)
 {
-  var json = JsonConvert.SerializeObject(obj);
+  var json = JsonSerializer.Serialize(obj);
   logger.Debug("Serialized message " + json);
   return Encoding.UTF8.GetBytes(json);
 }

@@ -8,7 +8,7 @@ import { getMessageType, messageHasNotNullPayload } from '../../utils/general';
 export function serializer(message, params) {
   if (!messageHasNotNullPayload(message.payload())) return '';
   const messageType = getMessageType(message);
-  const serialization = params.jsonSerialization === 'json' ? 'JsonSerializer.Serialize(obj);' : 'JsonConvert.SerializeObject(obj);';  
+  const serialization = params.serializationLibrary === 'json' ? 'JsonSerializer.Serialize(obj);' : 'JsonConvert.SerializeObject(obj);';  
   return `internal static byte[] JsonSerializerSupport(LoggingInterface logger, ${messageType} obj)
 {
   var json = ${serialization}

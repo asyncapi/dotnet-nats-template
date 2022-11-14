@@ -13,7 +13,7 @@ namespace Asyncapi.Nats.Client.Channels
 {
   var srt = Encoding.UTF8.GetString(buffer);
   logger.Debug("Deserializing message " + srt);
-  return JsonConvert.DeserializeObject<AnonymousSchema_1>(json, new AnonymousSchema_1Converter());
+  return JsonConvert.DeserializeObject<AnonymousSchema_1>(srt, new AnonymousSchema_1Converter());
 }
   public static IAsyncSubscription Subscribe(
     LoggingInterface logger,
