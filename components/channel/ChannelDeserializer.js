@@ -9,7 +9,7 @@ import { getMessageType, messageHasNotNullPayload } from '../../utils/general';
 export function deserializer(message, params) {
   if (!messageHasNotNullPayload(message.payload())) return '';
   const messageType = getMessageType(message);
-  const deserialization = params.jsonSerialization === 'json' ? `JsonSerializer.Deserialize<${messageType}>(srt);` : `JsonConvert.DeserializeObject<${messageType}>(json, new ${messageType}Converter());`;  
+  const deserialization = params.jsonSerialization === 'json' ? `JsonSerializer.Deserialize<${messageType}>(srt);` : `JsonConvert.DeserializeObject<${messageType}>(srt, new ${messageType}Converter());`;  
   return `internal static ${messageType} JsonDeserializerSupport(LoggingInterface logger, byte[] buffer)
 {
   var srt = Encoding.UTF8.GetString(buffer);

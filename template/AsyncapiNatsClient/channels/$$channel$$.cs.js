@@ -32,8 +32,8 @@ namespace Asyncapi.Nats.Client.Channels
 {
   class ${pascalCase(channelName)}
   {
-${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined) : ''}
-${channel.hasSubscribe() ? publish(channelName, channelParameterEntries, channel.subscribe().message(0)) : ''}
+${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined, params) : ''}
+${channel.hasSubscribe() ? publish(channelName, channelParameterEntries, channel.subscribe().message(0), params) : ''}
   }
 }`
     }

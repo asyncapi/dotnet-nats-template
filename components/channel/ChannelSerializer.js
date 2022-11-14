@@ -3,6 +3,7 @@ import { getMessageType, messageHasNotNullPayload } from '../../utils/general';
 /**
  * Returns the serializer code for the channel
  * @param {*} message 
+ * @param {*} params 
  */
 export function serializer(message, params) {
   if (!messageHasNotNullPayload(message.payload())) return '';
