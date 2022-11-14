@@ -26,10 +26,9 @@ function getPublishCode(publishMessage, realizedChannelPath) {
  * 
  * @param {*} channelName 
  * @param {*} channelParameters 
- * @param {*} publishMessage 
- * @param {*} params 
+ * @param {*} publishMessage
  */
-export default function publish(channelName, channelParameters, publishMessage, params) {
+export default function publish(channelName, channelParameters, publishMessage) {
   const functionParameters = getFunctionParameters(publishMessage, channelParameters);
   const realizedChannelPath = realizeChannelName(channelParameters, channelName);
   const publishCode = getPublishCode(publishMessage, realizedChannelPath);
