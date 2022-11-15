@@ -20,6 +20,14 @@ export default function asyncapiNatsClient({ params }) {
   if (params.fileVersion !== undefined) {
     fileVersion = `<FileVersion>${params.fileVersion}</FileVersion>`;
   }
+  let serializationLibrary = '';
+  if (params.serializationLibrary) {
+    if (params.serializationLibrary === 'json') {
+      serializationLibrary = '<PackageReference Include="System.Text.Json" Version="5.0.2" />';
+    } else {
+      serializationLibrary = '<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />';
+    }
+  }
   return <File name={`${projectName}.csproj`}>
     {`
 <Project Sdk="Microsoft.NET.Sdk">
@@ -36,11 +44,10 @@ export default function asyncapiNatsClient({ params }) {
 
   <ItemGroup>
     <None Remove="NATS.Client" />
-    <None Remove="System.Text.Json" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NATS.Client" Version="1.0.1" />
-    <PackageReference Include="System.Text.Json" Version="5.0.2" />
+    ${serializationLibrary}
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>
 </Project>`

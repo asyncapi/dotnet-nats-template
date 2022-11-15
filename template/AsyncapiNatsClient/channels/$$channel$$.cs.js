@@ -19,8 +19,9 @@ import { serializer } from '../../../components/channel/ChannelSerializer';
  * @param {RenderArgument} param0 
  * @returns 
  */
-export default function clientFile({ channelName, channel }) {
+export default function clientFile({ channelName, channel, params }) {
   const channelParameterEntries = Object.entries(channel.parameters());
+  const serializationLibrary = params.serializationLibrary === 'json' ? 'using System.Text.Json;' : 'using Newtonsoft.Json;';
   let channelCode = '';
   if (channel.hasPublish()) {
     channelCode = `${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined) : ''}`;
@@ -28,13 +29,13 @@ export default function clientFile({ channelName, channel }) {
     channelCode = `${serializer(channel.subscribe().message(0))}
 ${publish(channelName, channelParameterEntries, channel.subscribe().message(0))}
 ${jetStreamPublish(channelName, channelParameterEntries, channel.subscribe().message(0))}`;
-  }
+  
   return <File name={`${pascalCase(channelName)}.cs`}>
     {
       `using NATS.Client;
 using System;
 using System.Text;
-using System.Text.Json;
+${serializationLibrary}
 using Asyncapi.Nats.Client.Models;
 using NATS.Client.JetStream;
 

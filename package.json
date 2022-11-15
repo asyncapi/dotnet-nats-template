@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
@@ -23,11 +23,12 @@
   "license": "Apache-2.0",
   "scripts": {
     "test": "echo \"No tests specified yet\"",
-    "lint": "./node_modules/.bin/eslint --max-warnings 0 --config .eslintrc .",
+    "lint": "eslint --max-warnings 0 --config .eslintrc ./",
     "lint:fix": "npm run lint -- --fix",
     "generate:assets": "npm run generate:examples",
-    "generate:examples": "npm run generate:examples:pubsub",
+    "generate:examples": "npm run generate:examples:pubsub && npm run generate:examples:newtonsoft",
     "generate:examples:pubsub": "cd \"examples/pubsub\" && sh ./Generate.sh",
+    "generate:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Generate.sh",
     "build:examples": "npm run build:examples:pubsub",
     "build:examples:pubsub": "cd \"examples/pubsub\" && sh ./Build.sh",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
@@ -37,9 +38,8 @@
   },
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.23",
-    "@asyncapi/modelina": "^0.59.5",
-    "@asyncapi/parser": "^1.15.1",
-    "@babel/core": "^7.15.0"
+    "@asyncapi/modelina": "^1.0.0-next.24",
+    "@asyncapi/parserV2": "npm:@asyncapi/parser@v2.0.0-next-major.7"
   },
   "publishConfig": {
     "access": "public"
@@ -109,6 +109,10 @@
       },
       "fileVersion": {
         "description": "FileVersion of the generated library"
+      },
+      "serializationLibrary": {
+        "description": "Which serialization library should the models use? `newtonsoft` or `json` (system.text.json)",
+        "default": "json"
       }
     },
     "generator": ">=1.1.1 <2.0.0"

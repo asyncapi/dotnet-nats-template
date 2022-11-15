@@ -11,9 +11,10 @@ namespace Asyncapi.Nats.Client.Tests
         public void ShouldSerializeAndDeserializeAccurately()
         {
             AnonymousSchema_1 temp = new AnonymousSchema_1();
-            string json = JsonSerializer.Serialize(temp);
-            AnonymousSchema_1 output = JsonSerializer.Deserialize<AnonymousSchema_1>(json);
-            Assert.Equal(temp, output);
+            string json1 = JsonSerializer.Serialize(temp);
+            AnonymousSchema_1 output = JsonSerializer.Deserialize<AnonymousSchema_1>(json1);
+            string json2 = JsonSerializer.Serialize(output);
+            Assert.Equal(json1, json2);
         }
     }
 }
