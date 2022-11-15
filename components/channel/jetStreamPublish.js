@@ -1,5 +1,4 @@
 import { getMessageType, messageHasNotNullPayload, realizeChannelName, realizeParametersForChannel } from '../../utils/general';
-import {serializer} from './ChannelSerializer';
 
 function getFunctionParameters(publishMessage, channelParameters) {
   const functionParameters = ['LoggingInterface logger', 'IJetStream connection'];
