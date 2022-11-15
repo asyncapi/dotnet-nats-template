@@ -24,12 +24,12 @@ export default function clientFile({ channelName, channel, params }) {
   const serializationLibrary = params.serializationLibrary === 'json' ? 'using System.Text.Json;' : 'using Newtonsoft.Json;';
   let channelCode = '';
   if (channel.hasPublish()) {
-    channelCode = `${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined) : ''}`;
+    channelCode = `${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined, params) : ''}`;
   } else if (channel.hasSubscribe()) {
-    channelCode = `${serializer(channel.subscribe().message(0))}
+    channelCode = `${serializer(channel.subscribe().message(0), params)}
 ${publish(channelName, channelParameterEntries, channel.subscribe().message(0))}
 ${jetStreamPublish(channelName, channelParameterEntries, channel.subscribe().message(0))}`;
-  
+  }
   return <File name={`${pascalCase(channelName)}.cs`}>
     {
       `using NATS.Client;

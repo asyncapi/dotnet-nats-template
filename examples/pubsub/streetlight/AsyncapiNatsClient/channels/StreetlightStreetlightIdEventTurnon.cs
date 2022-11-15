@@ -25,7 +25,6 @@ String streetlight_id
   var serializedObject = JsonSerializerSupport(logger, requestMessage); 
   connection.Publish("streetlight.{streetlight_id}.event.turnon", serializedObject);
 }
-
 public static void JetStreamPublish(
   LoggingInterface logger,
 IJetStream connection,
