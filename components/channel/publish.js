@@ -27,13 +27,14 @@ function getPublishCode(publishMessage, realizedChannelPath) {
  * @param {*} channelName 
  * @param {*} channelParameters 
  * @param {*} publishMessage 
+ * @param {*} params 
  */
-export default function publish(channelName, channelParameters, publishMessage) {
+export default function publish(channelName, channelParameters, publishMessage, params) {
   const functionParameters = getFunctionParameters(publishMessage, channelParameters);
   const realizedChannelPath = realizeChannelName(channelParameters, channelName);
   const publishCode = getPublishCode(publishMessage, realizedChannelPath);
   return `
-${serializer(publishMessage)}
+${serializer(publishMessage, params)}
 
 public static void Publish(
   ${functionParameters.join(',\n')}

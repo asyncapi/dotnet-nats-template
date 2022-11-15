@@ -1,5 +1,5 @@
 import { File } from '@asyncapi/generator-react-sdk';
-import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
+import { CSharpGenerator } from '@asyncapi/modelina';
 
 /**
  * @typedef RenderArgument
@@ -12,12 +12,13 @@ import { CSharpGenerator, FormatHelpers } from '@asyncapi/modelina';
  * @param {RenderArgument} param0
  * @returns
  */
-export default async function modelTestRenderer({ asyncapi }) {
+export default async function modelTestRenderer({ originalAsyncAPI, params }) {
+  if (params.serializationLibrary === undefined || params.serializationLibrary !== 'json') return undefined;
   const generator = new CSharpGenerator();
-  const generatedModels = await generator.generate(asyncapi);
+  const generatedModels = await generator.generate(JSON.parse(originalAsyncAPI));
   const files = [];
   for (const generatedModel of generatedModels) {
-    const className = FormatHelpers.toPascalCase(generatedModel.modelName);
+    const className = generatedModel.modelName;
     const modelFileName = `${className}Test.cs`;
     const fileContent = `
 using System.Text.Json;
@@ -32,9 +33,10 @@ namespace Asyncapi.Nats.Client.Tests
         public void ShouldSerializeAndDeserializeAccurately()
         {
             ${className} temp = new ${className}();
-            string json = JsonSerializer.Serialize(temp);
-            ${className} output = JsonSerializer.Deserialize<${className}>(json);
-            Assert.Equal(temp, output);
+            string json1 = JsonSerializer.Serialize(temp);
+            ${className} output = JsonSerializer.Deserialize<${className}>(json1);
+            string json2 = JsonSerializer.Serialize(output);
+            Assert.Equal(json1, json2);
         }
     }
 }`;

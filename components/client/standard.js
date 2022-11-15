@@ -29,44 +29,19 @@ export default function standard() {
 		}
 	}	
 
-	internal byte[] JsonSerializer(object obj)
-	{
-		if (obj == null)
-		{
-			return null;
-		}
-		return (byte[])obj;
-	}
-
-
-
-	internal object JsonDeserializer(byte[] buffer)
-	{
-		return buffer;
-	}
-
 	public void Connect()
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection();
-		setserializers();
-	}
-
-	private void setserializers()
-	{
-		connection.OnDeserialize = JsonDeserializer;
-		connection.OnSerialize = JsonSerializer;
+		connection = new ConnectionFactory().CreateConnection();
 	}
 
 	public void Connect(string url)
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection(url);
-		setserializers();
+		connection = new ConnectionFactory().CreateConnection(url);
 	}
 	
 	public void Connect(Options opts)
 	{
-		connection = new ConnectionFactory().CreateEncodedConnection(opts);
-		setserializers();
+		connection = new ConnectionFactory().CreateConnection(opts);
 	}
 	public Boolean IsConnected()
 	{
@@ -80,6 +55,5 @@ export default function standard() {
 			connection.Close();
 		}
 	}
-
 `;
 }
