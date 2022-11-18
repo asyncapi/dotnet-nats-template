@@ -4,6 +4,8 @@ import { pascalCase } from '../../../utils/general';
 import { Channel } from '@asyncapi/parser';
 import publish from '../../../components/channel/publish';
 import subscribe from '../../../components/channel/subscribe';
+import jetStreamPublish from '../../../components/channel/jetStreamPublish';
+import { serializer } from '../../../components/channel/ChannelSerializer';
 
 /**
  * @typedef RenderArgument
@@ -20,6 +22,14 @@ import subscribe from '../../../components/channel/subscribe';
 export default function clientFile({ channelName, channel, params }) {
   const channelParameterEntries = Object.entries(channel.parameters());
   const serializationLibrary = params.serializationLibrary === 'json' ? 'using System.Text.Json;' : 'using Newtonsoft.Json;';
+  let channelCode = '';
+  if (channel.hasPublish()) {
+    channelCode = `${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined, params) : ''}`;
+  } else if (channel.hasSubscribe()) {
+    channelCode = `${serializer(channel.subscribe().message(0), params)}
+${publish(channelName, channelParameterEntries, channel.subscribe().message(0))}
+${jetStreamPublish(channelName, channelParameterEntries, channel.subscribe().message(0))}`;
+  }
   return <File name={`${pascalCase(channelName)}.cs`}>
     {
       `using NATS.Client;
@@ -27,13 +37,13 @@ using System;
 using System.Text;
 ${serializationLibrary}
 using Asyncapi.Nats.Client.Models;
+using NATS.Client.JetStream;
 
 namespace Asyncapi.Nats.Client.Channels
 {
   class ${pascalCase(channelName)}
   {
-${channel.hasPublish() ? subscribe(channelName, channelParameterEntries, channel.publish().message(0), channel.publish().hasBinding('nats') ? channel.subscribe().binding('nats').queue : undefined, params) : ''}
-${channel.hasSubscribe() ? publish(channelName, channelParameterEntries, channel.subscribe().message(0), params) : ''}
+    ${channelCode}
   }
 }`
     }

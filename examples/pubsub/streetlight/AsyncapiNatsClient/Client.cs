@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Asyncapi.Nats.Client.Channels;
 using Asyncapi.Nats.Client.Models;
 using NATS.Client;
+using NATS.Client.JetStream;
 namespace Asyncapi.Nats.Client
 {
 
@@ -31,7 +32,8 @@ String streetlight_id
 		{
 		}
 	}
-	private IEncodedConnection connection;
+	private IConnection connection;
+	private IJetStream jetstream;
 	private LoggingInterface logger;
 	public LoggingInterface Logger
 	{
@@ -44,7 +46,7 @@ String streetlight_id
 		{
 			logger = value;
 		}
-	}	
+	}
 
 	public void Connect()
 	{
@@ -63,6 +65,10 @@ String streetlight_id
 	public Boolean IsConnected()
 	{
 		return connection != null && !connection.IsClosed();
+	}
+	public void createJetStreamContext(JetStreamOptions options)
+	{
+		jetstream = connection.CreateJetStreamContext(options);
 	}
 	
 	public void Close()
@@ -107,6 +113,23 @@ String streetlight_id
   {
     StreetlightStreetlightIdEventTurnon.Publish(logger,
 connection,
+requestMessage,
+streetlight_id);
+  }
+  else
+  {
+    throw new ClientNotConnected();
+  }
+}
+public void JetStreamPublishToStreetlightStreetlightIdEventTurnon(
+  AnonymousSchema_3 requestMessage,
+String streetlight_id
+)
+{
+  if (IsConnected())
+  {
+    StreetlightStreetlightIdEventTurnon.JetStreamPublish(logger,
+jetstream,
 requestMessage,
 streetlight_id);
   }

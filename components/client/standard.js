@@ -14,7 +14,8 @@ export default function standard() {
 		{
 		}
 	}
-	private IEncodedConnection connection;
+	private IConnection connection;
+	private IJetStream jetstream;
 	private LoggingInterface logger;
 	public LoggingInterface Logger
 	{
@@ -27,7 +28,7 @@ export default function standard() {
 		{
 			logger = value;
 		}
-	}	
+	}
 
 	public void Connect()
 	{
@@ -46,6 +47,10 @@ export default function standard() {
 	public Boolean IsConnected()
 	{
 		return connection != null && !connection.IsClosed();
+	}
+	public void createJetStreamContext(JetStreamOptions options)
+	{
+		jetstream = connection.CreateJetStreamContext(options);
 	}
 	
 	public void Close()

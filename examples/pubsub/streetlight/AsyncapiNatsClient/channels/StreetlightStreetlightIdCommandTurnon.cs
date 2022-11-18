@@ -3,12 +3,13 @@ using System;
 using System.Text;
 using System.Text.Json;
 using Asyncapi.Nats.Client.Models;
+using NATS.Client.JetStream;
 
 namespace Asyncapi.Nats.Client.Channels
 {
   class StreetlightStreetlightIdCommandTurnon
   {
-
+    
   internal static AnonymousSchema_1 JsonDeserializerSupport(LoggingInterface logger, byte[] buffer)
 {
   var srt = Encoding.UTF8.GetString(buffer);
@@ -17,18 +18,18 @@ namespace Asyncapi.Nats.Client.Channels
 }
   public static IAsyncSubscription Subscribe(
     LoggingInterface logger,
-IEncodedConnection connection,
+IConnection connection,
 StreetlightStreetlightIdCommandTurnonOnRequest onRequest,
 String streetlight_id
   )
   {
-    EventHandler<EncodedMessageEventArgs> handler = (sender, args) =>
+    EventHandler<MsgHandlerEventArgs> handler = (sender, args) =>
     {
       logger.Debug("Got message for channel subscription: " + $"streetlight.{streetlight_id}.command.turnon");
-      var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.ReceivedObject);
+      var deserializedMessage = JsonDeserializerSupport(logger, (byte[])args.Message.Data);
 
       var unmodifiedChannel = "streetlight.{streetlight_id}.command.turnon";
-  var channel = args.Subject;
+  var channel = args.Message.Subject;
   var streetlightIdSplit = unmodifiedChannel.Split(new string[] { "{streetlight_id}" }, StringSplitOptions.None);
   String[] splits = {
     streetlightIdSplit[0],
@@ -44,6 +45,5 @@ streetlightIdParam);
     logger.Debug("Subscribing to: " + $"streetlight.{streetlight_id}.command.turnon");
     return connection.SubscribeAsync($"streetlight.{streetlight_id}.command.turnon",handler);
   }
-
   }
 }
