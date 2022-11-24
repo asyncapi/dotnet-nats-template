@@ -44,6 +44,7 @@ targetFramework | Set the project target frameworks. Separate multiple by `;`. |
 packageVersion | PackageVersion to use for the generated library. | No | None | string | `1.0.1`
 assemblyVersion | AssemblyVersion to use for the generated library. | No | None | string | `1.0.1.0`
 fileVersion | FileVersion to use for the generated library. | No | None | string | `1.0.1.0`
+serializationLibrary | Serialization library for the underlying models. | No | `json` | `newtonsoft` or `json` (system.text.json)` | `newtonsoft`
 
 # Contributing
 
