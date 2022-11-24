@@ -3,6 +3,7 @@ namespace Asyncapi.Nats.Client.Models
   using Newtonsoft.Json;
   using Newtonsoft.Json.Linq;
   using System.Collections.Generic;
+  using System.Linq;
 
   [JsonConverter(typeof(AnonymousSchema_3Converter))]
   public class AnonymousSchema_3
@@ -18,12 +19,12 @@ namespace Asyncapi.Nats.Client.Models
 
   public class AnonymousSchema_3Converter : JsonConverter<AnonymousSchema_3>
   {
-    public override AnonymousSchema_3 ReadJson(JsonReader reader, Type objectType, AnonymousSchema_3 existingValue, bool hasExistingValue, JsonSerializer serializer)
+    public override AnonymousSchema_3 ReadJson(JsonReader reader, System.Type objectType, AnonymousSchema_3 existingValue, bool hasExistingValue, JsonSerializer serializer)
   {
     JObject jo = JObject.Load(reader);
     AnonymousSchema_3 value = new AnonymousSchema_3();
 
-    if(jo["lumen" != null) {
+    if(jo["lumen"] != null) {
     value.Lumen = jo["lumen"].ToObject<int>(serializer);
   }
 
@@ -34,7 +35,7 @@ namespace Asyncapi.Nats.Client.Models
   {
     JObject jo = new JObject();
 
-    if (value.lumen != null)
+    if (value.Lumen != null)
   {
     jo.Add("lumen", JToken.FromObject(value.Lumen, serializer));
   }
