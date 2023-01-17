@@ -12,11 +12,11 @@ import { CSharpGenerator, CSHARP_JSON_SERIALIZER_PRESET} from '@asyncapi/modelin
  * @param {RenderArgument} param0
  * @returns
  */
-export default async function modelRenderer({ originalAsyncAPI, params }) {
+export default async function modelRenderer({ asyncapi, params }) {
   if (params.serializationLibrary === undefined || params.serializationLibrary !== 'json') return undefined;
   const generator = new CSharpGenerator({presets: [CSHARP_JSON_SERIALIZER_PRESET]});
   
-  const generatedModels = await generator.generateCompleteModels(JSON.parse(originalAsyncAPI), {
+  const generatedModels = await generator.generateCompleteModels(asyncapi, {
     namespace: 'Asyncapi.Nats.Client.Models'
   });
   const files = [];

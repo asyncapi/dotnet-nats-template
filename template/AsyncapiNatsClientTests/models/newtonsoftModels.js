@@ -13,12 +13,10 @@ import { CSharpGenerator } from '@asyncapi/modelina';
  * @returns
  */
 
-export default async function modelTestRenderer({ originalAsyncAPI, params }) {
+export default async function modelTestRenderer({ asyncapi, params }) {
   if (params.serializationLibrary !== 'newtonsoft') return;
   const generator = new CSharpGenerator();
-  const generatedModels = await generator.generate(
-    JSON.parse(originalAsyncAPI)
-  );
+  const generatedModels = await generator.generate(asyncapi);
   const files = [];
 
   for (const generatedModel of generatedModels) {

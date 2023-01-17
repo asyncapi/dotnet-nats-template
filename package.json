@@ -29,8 +29,9 @@
     "generate:examples": "npm run generate:examples:pubsub && npm run generate:examples:newtonsoft",
     "generate:examples:pubsub": "cd \"examples/pubsub\" && sh ./Generate.sh",
     "generate:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Generate.sh",
-    "build:examples": "npm run build:examples:pubsub",
+    "build:examples": "npm run build:examples:pubsub && npm run build:examples:newtonsoft",
     "build:examples:pubsub": "cd \"examples/pubsub\" && sh ./Build.sh",
+    "build:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Build.sh",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "release": "semantic-release",
     "contributors:add": "all-contributors add",
@@ -38,8 +39,7 @@
   },
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.23",
-    "@asyncapi/modelina": "^1.0.0-next.29",
-    "@asyncapi/parserV2": "npm:@asyncapi/parser@v2.0.0-next-major.7"
+    "@asyncapi/modelina": "^1.0.0-next.40"
   },
   "publishConfig": {
     "access": "public"
