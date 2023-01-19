@@ -21,10 +21,15 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
-          cache: 'npm'
+          node-version-file: '.nvmrc'
       - name: Install dependencies
+        id: first-installation
         run: npm ci
+        continue-on-error: true
+      - name: Clear NPM cache and install deps again
+        run: | 
+          npm cache clean --force
+          npm ci
       - name: Generate examples
         run: npm run generate:examples
       - name: Build examples
