@@ -15,7 +15,7 @@ function getPublishCode(publishMessage, realizedChannelPath) {
   let publishCode = `connection.Publish($${realizedChannelPath}, Encoding.UTF8.GetBytes("null"));`;
   if (messageHasNotNullPayload(publishMessage.payload())) {
     publishCode = `var serializedObject = JsonSerializerSupport(logger, requestMessage); 
-  connection.Publish(${realizedChannelPath}, serializedObject);`;
+  connection.Publish(\$${realizedChannelPath}, serializedObject);`;
   }
   return publishCode;
 }
