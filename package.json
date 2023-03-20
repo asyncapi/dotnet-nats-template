@@ -30,7 +30,7 @@
     "generate:examples:pubsub": "cd \"examples/pubsub\" && sh ./Generate.sh",
     "generate:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Generate.sh",
     "generate:examples:yaml": "cd \"examples/yaml\" && sh ./Generate.sh",
-    "build:examples": "npm run build:examples:pubsub && npm run build:examples:newtonsoft && build:examples:yaml",
+    "build:examples": "npm run build:examples:pubsub && npm run build:examples:newtonsoft && npm run build:examples:yaml",
     "build:examples:pubsub": "cd \"examples/pubsub\" && sh ./Build.sh",
     "build:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Build.sh",
     "build:examples:yaml": "cd \"examples/yaml\" && sh ./Build.sh",
@@ -47,7 +47,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@asyncapi/generator": "^1.9.14",
+    "@asyncapi/generator": "^1.9.17",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/github": "^7.0.4",
     "@semantic-release/npm": "^7.0.3",
