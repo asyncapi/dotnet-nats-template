@@ -52,6 +52,7 @@ export function getSchemaFileName(schemaName) {
  * @param {string} payload to check
  */
 function containsPayload(messageContentType, defaultContentType, payload) {
+  // eslint-disable-next-line sonarjs/prefer-single-boolean-return
   if (
     (messageContentType !== undefined &&
       messageContentType.toLowerCase() === payload) ||
