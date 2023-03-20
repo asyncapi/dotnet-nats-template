@@ -11,6 +11,10 @@
     "nats",
     "template"
   ],
+  "engine": {
+    "node": ">=14",
+    "npm": ">=8"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/asyncapi/dotnet-nats-template.git"
@@ -26,12 +30,14 @@
     "lint": "eslint --max-warnings 0 --config .eslintrc ./",
     "lint:fix": "npm run lint -- --fix",
     "generate:assets": "npm run generate:examples",
-    "generate:examples": "npm run generate:examples:pubsub && npm run generate:examples:newtonsoft",
+    "generate:examples": "npm run generate:examples:pubsub && npm run generate:examples:newtonsoft && npm run generate:examples:yaml",
     "generate:examples:pubsub": "cd \"examples/pubsub\" && sh ./Generate.sh",
     "generate:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Generate.sh",
-    "build:examples": "npm run build:examples:pubsub && npm run build:examples:newtonsoft",
+    "generate:examples:yaml": "cd \"examples/yaml\" && sh ./Generate.sh",
+    "build:examples": "npm run build:examples:pubsub && npm run build:examples:newtonsoft && build:examples:yaml",
     "build:examples:pubsub": "cd \"examples/pubsub\" && sh ./Build.sh",
     "build:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Build.sh",
+    "build:examples:yaml": "cd \"examples/yaml\" && sh ./Build.sh",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "release": "semantic-release",
     "contributors:add": "all-contributors add",
@@ -39,7 +45,7 @@
   },
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.23",
-    "@asyncapi/modelina": "^1.0.0-next.40"
+    "@asyncapi/modelina": "^1.2.1"
   },
   "publishConfig": {
     "access": "public"
