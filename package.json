@@ -11,10 +11,6 @@
     "nats",
     "template"
   ],
-  "engine": {
-    "node": ">=14",
-    "npm": ">=8"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/asyncapi/dotnet-nats-template.git"
