@@ -1,4 +1,4 @@
 #!/bin/sh
 
 rm -rf ./streetlight
-../../node_modules/@asyncapi/generator/cli.js --output "./streetlight" "../streetlight.yaml" "../../" --force-write
+../../node_modules/.bin/asyncapi generate fromTemplate "../streetlight.yaml" "../../" --force-write --output "./streetlight" 
