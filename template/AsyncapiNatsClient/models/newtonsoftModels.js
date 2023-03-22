@@ -15,14 +15,14 @@ import {
  * @param {RenderArgument} param0
  * @returns
  */
-export default async function modelRenderer({ params, originalAsyncAPI }) {
+export default async function modelRenderer({ params, asyncapi }) {
   if (params.serializationLibrary !== 'newtonsoft') return;
   const generator = new CSharpGenerator({
     presets: [
       CSHARP_NEWTONSOFT_SERIALIZER_PRESET
     ],
   });
-  const generatedModels = await generator.generateCompleteModels(JSON.parse(originalAsyncAPI), {
+  const generatedModels = await generator.generateCompleteModels(asyncapi, {
     namespace: 'Asyncapi.Nats.Client.Models',
   });
   const files = [];
