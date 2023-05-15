@@ -7,5 +7,4 @@
 **We highly recommend you do not modify this client in any way since it is build for you to re-generate it when your AsyncAPI document changes.** 
 
 
-
     

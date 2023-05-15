@@ -1,6 +1,6 @@
 {
   "name": "@asyncapi/dotnet-nats-template",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "NATS .NET template for the AsyncAPI generator",
   "keywords": [
     "asyncapi",
@@ -29,8 +29,9 @@
     "generate:examples": "npm run generate:examples:pubsub && npm run generate:examples:newtonsoft",
     "generate:examples:pubsub": "cd \"examples/pubsub\" && sh ./Generate.sh",
     "generate:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Generate.sh",
-    "build:examples": "npm run build:examples:pubsub",
+    "build:examples": "npm run build:examples:pubsub && npm run build:examples:newtonsoft",
     "build:examples:pubsub": "cd \"examples/pubsub\" && sh ./Build.sh",
+    "build:examples:newtonsoft": "cd \"examples/newtonsoft\" && sh ./Build.sh",
     "bump:version": "npm --no-git-tag-version --allow-same-version version $VERSION",
     "release": "semantic-release",
     "contributors:add": "all-contributors add",
@@ -38,14 +39,14 @@
   },
   "dependencies": {
     "@asyncapi/generator-react-sdk": "^0.2.23",
-    "@asyncapi/modelina": "^1.0.0-next.29",
-    "@asyncapi/parserV2": "npm:@asyncapi/parser@v2.0.0-next-major.7"
+    "@asyncapi/modelina": "^1.2.1"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@asyncapi/generator": "^1.9.14",
+    "@asyncapi/cli": "0.32.0",
+    "@babel/core": "^7.21.3",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/github": "^7.0.4",
     "@semantic-release/npm": "^7.0.3",
@@ -54,9 +55,9 @@
     "conventional-changelog-conventionalcommits": "^4.2.3",
     "eslint": "^7.0.0",
     "eslint-plugin-mocha": "^7.0.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-security": "^1.4.0",
-    "eslint-plugin-sonarjs": "^0.5.0",
+    "eslint-plugin-react": "^7.32.1",
+    "eslint-plugin-security": "^1.6.0",
+    "eslint-plugin-sonarjs": "^0.18.0",
     "semantic-release": "^17.0.4"
   },
   "release": {
