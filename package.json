@@ -45,7 +45,7 @@
     "access": "public"
   },
   "devDependencies": {
-    "@asyncapi/cli": "0.32.0",
+    "@asyncapi/cli": "^0.52.1",
     "@babel/core": "^7.21.3",
     "@semantic-release/commit-analyzer": "^8.0.1",
     "@semantic-release/github": "^7.0.4",
