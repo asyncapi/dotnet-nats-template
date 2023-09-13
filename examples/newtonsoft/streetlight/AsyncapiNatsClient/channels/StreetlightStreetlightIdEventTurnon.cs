@@ -23,7 +23,7 @@ String streetlight_id
 ){
   logger.Debug("Publishing to channel: " + $"streetlight.{streetlight_id}.event.turnon");
   var serializedObject = JsonSerializerSupport(logger, requestMessage); 
-  connection.Publish("streetlight.{streetlight_id}.event.turnon", serializedObject);
+  connection.Publish($"streetlight.{streetlight_id}.event.turnon", serializedObject);
 }
 public static void JetStreamPublish(
   LoggingInterface logger,
